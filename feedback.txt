@@ -1,1 +1,5 @@
 “Lab1 Feedback”
+Did not handle negative numbers (not explicitly mentioned in Word doc)
+You don't need your junk definition. the char definition handles all junk (but you should probably use the name 'junk', not 'char')
+
+

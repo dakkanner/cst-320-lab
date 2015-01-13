@@ -21,11 +21,11 @@ whitespace		[' '' '\t\n]
 junk			[@#$:]
 ident			[a-zA-Z_][a-zA-Z0-9_]*
 oper			[+\-*/&=%]|"&&"|"=="|"\|\|"
-floating		[0-9]*\.?[0-9]+
-integer 		[0-9]+
+floating		[+-]?[0-9]*\.?[0-9]+
+integer 		[+-]?[0-9]+
 punct			[\(\)\{\}\[\]\;\,\.]
 comment			\/\/.*
-char			.
+junk			.
 
 %%
 
@@ -41,6 +41,7 @@ char			.
 "char"         	RETURN(CHAR);
 "struct"        RETURN(STRUCT);
 "return"        RETURN(RETURN_TOK);
+"end"        	RETURN(END);
 
 {comment}		{};
 {whitespace}	{};
@@ -49,8 +50,6 @@ char			.
 {floating}		RETURN(FLOAT_VAL);
 {oper}			RETURN(OPERATOR);
 {punct}			RETURN(yytext[0]);
-{char}			RETURN(JUNK_TOKEN);
-
 {junk}			RETURN (JUNK_TOKEN);
 
 %%
