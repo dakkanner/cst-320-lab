@@ -18,7 +18,6 @@ static int Return(int val);
 
 
 whitespace		[' '' '\t\n]
-junk			[@#$:]
 ident			[a-zA-Z_][a-zA-Z0-9_]*
 oper			[+\-*/&=%]|"&&"|"=="|"\|\|"
 floating		[+-]?[0-9]*\.?[0-9]+

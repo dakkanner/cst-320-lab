@@ -1,17 +1,12 @@
 #include <iostream>
 #include "lex.h"
 #include "parse.h"
+#include "tokens.h"
 
 int yylval = 0;
 int token = -1;
 int oldToken = -1;
 
-//*******************************************
-void Error(std::string expecting)
-{
-    std::cout << "Found " << yytext << " when expecting a " << expecting;
-    std::cout << " in line " << yylineno << std::endl;
-}
 //*******************************************
 int GetToken()
 {
@@ -22,7 +17,6 @@ int GetToken()
     } else {
         oldToken = yylex();
     }
-
     return oldToken;
 }
 //*******************************************
@@ -31,37 +25,63 @@ void UnGetToken()
     token = oldToken;
 }
 //*******************************************
+void Error(std::string expecting)
+{
+    std::cout << "Found " << yytext << " when expecting a '" << expecting;
+    std::cout << "' in line " << yylineno << std::endl;
+	
+    int dumpToken = GetToken();
+    while (dumpToken != ';' &&  dumpToken != END)
+    {
+        dumpToken = GetToken();
+    }
+}
+//*******************************************
 bool FindPROG()
 {
     //Program
-    if (!FindSTMTS()) return false;
-    
-    int token = GetToken();
-    if (token != END)
-    {
-        UnGetToken();
-		Error("end");
-        return false;
-    }
-
-	std::cout << "Found a program";
+	
+	int lToken = GetToken();
+	if (lToken != END)
+	{
+		UnGetToken();
+		if (!FindSTMTS()) 
+		{
+			Error("Program");
+			return false;
+		}
+			
+		lToken = GetToken();
+		if (lToken != END)
+		{
+			Error("End");
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
     return true;
 }
 //*******************************************
 bool FindSTMTS()
 {
-    //Statements
-    int token = GetToken();
-    if (token == 0)
+    if (!FindSTMT())
     {
-        return true;
-    }
-	else
-	{
-		UnGetToken();
-		if (!FindSTMT()) return false;
-		if (!FindSTMTS()) return false;
-	}
+        int t = GetToken();
+        if (t == END)
+        {
+            UnGetToken();
+            return true;
+        }
+        UnGetToken();
+        if (!FindSTMTS()) 
+            return true;
+    }     
+    else if (!FindSTMTS()) 
+        return false;
 
     return true;
 }
@@ -69,48 +89,49 @@ bool FindSTMTS()
 bool FindSTMT()
 {
     //Statement
-    if (!FindEXPR()) return false;
+	
+    if ( !FindEXPR() ) 
+		return false;
     
-    int token = GetToken();
-    if (token != ';')
+    int lToken = GetToken();
+    if (lToken != ';')
     {
-        UnGetToken();
 		Error(";");
         return false;
     }
-	
-	std::cout << "Found a statement";
+	std::cout << "Found a statement" << std::endl;
     return true;
 }
 //*******************************************
 bool FindEXPR()
 {
-    //Expression
-	if (FindTERM() == true) 
+    //Expression		
+	int lToken = GetToken();
+	
+	if (lToken != '(')
 	{
-		
+		UnGetToken();
+		return FindTERM();
 	}
-	else{	
-		int token = GetToken();
-		if (token != '(')
-		{
-			UnGetToken();
-			Error("(");
+	else
+	{
+		if (!FindEXPR()) 
 			return false;
-		}
-		
-		if (!FindEXPR()) return false;
-		
-		int token = GetToken();
-		if (token != ')')
+	
+		lToken = GetToken();
+		if (lToken != ')')
 		{
-			UnGetToken();
 			Error(")");
 			return false;
+		}
+		else
+		{
+			return FindEXPR_P();
 		}
 		
 		if (!FindEXPR_P()) return false;
 	}
+	
     return true;
 }
 //*******************************************
@@ -118,35 +139,25 @@ bool FindEXPR_P()
 {
     //Expression_P
 	
-    int token = GetToken();
-    if (token == 0)
-    {
-        return true;
-    }
-	else
-	{ 
-		UnGetToken();
-		if (!FindPLUSOP()) return false;
-
-		//int token = GetToken();
-		if (token != '(')
+	if (FindPLUSOP()) 
+	{
+		int lToken = GetToken();
+		if (lToken != '(')
 		{
-			UnGetToken();
 			Error("(");
 			return false;
 		}
+		if (!FindEXPR()) 
+			return false;
 		
-		if (!FindEXPR()) return false;
-		
-		int token = GetToken();
-		if (token != ')')
+		lToken = GetToken();
+		if (lToken != ')')
 		{
-			UnGetToken();
 			Error(")");
 			return false;
 		}
-		
-		if (!FindEXPR_P()) return false;
+		else 
+			return FindEXPR_P();
 	}
 	
     return true;
@@ -156,11 +167,10 @@ bool FindPLUSOP()
 {
     //Plus Operator
 	
-    int token = GetToken();
-    if (token != '+' && token != '-')
+    int lToken = GetToken();
+    if (yytext[0] != '+' && yytext[0] != '-')
     {
         UnGetToken();
-		Error("+ or -");
         return false;
     }
 
@@ -171,82 +181,72 @@ bool FindTERM()
 {
     //Term
 	
-    int token = GetToken();
-    if (token == INT_VAL || token == FLOAT_VAL)
+    int lToken = GetToken();
+    if (lToken == INT_VAL || lToken == FLOAT_VAL)
     {
         return true;
     }
-	else if (token == "[")
+	else if (lToken == '[')
 	{	
-		if (!FindEXPR()) return false;
+		if (!FindEXPR()) 
+			return false;
 		
-		int token = GetToken();
-		if (token != ']')
+		lToken = GetToken();
+		if (lToken != ']')
 		{
 			UnGetToken();
 			Error("]");
 			return false;
 		}
 		
-		if (!FindTERM_P()) return false;
+		return FindTERM_P();
 	}
 	else 
 	{
 		UnGetToken();
-		Error("[");
 		return false;
 	}
     return true;
 }
 //*******************************************
 bool FindTERM_P()
-{
-    //Error("Term_P");
-	
-    int token = GetToken();
-    if (token == 0)
-    {
-        return true;
-    }
-	else
+{		
+	if (FindTIMESOP())
 	{
-		UnGetToken();
-		
-		if (!FindTIMESOP()) return false;
-		
-		int token = GetToken();
-		if (token != '[')
+		int lToken = GetToken();
+		if (lToken != '[')
 		{
-			UnGetToken();
 			Error("[");
 			return false;
 		}
 
-		if (!FindEXPR()) return false;
-		
-		int token = GetToken();
-		if (token != ']')
+		if (!FindEXPR()) 
 		{
-			UnGetToken();
-			Error("]");
 			return false;
 		}
-
-		if (!FindTERM_P()) return false;
+		
+		lToken = GetToken();
+		if (lToken == ']')
+		{
+			return FindTERM_P();
+		}
+		else
+		{
+			return false;
+		}
 	}
 
     return true;
 }
 //*******************************************
 bool FindTIMESOP()
-{
+{	
     //Times Operator
 	
-    int token = GetToken();
-    if (token != '*' && token != '/')
+    int lToken = GetToken();
+    if (yytext[0] != '*' && yytext[0] != '/')
     {
         UnGetToken();
-		Error("* or /");
         return false;
     }
 

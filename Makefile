@@ -20,9 +20,11 @@ clean:
 main.o: main.cpp langlex.c 
 	g++ $(COPTS) main.cpp -o main.o
 
+parse.o: parse.cpp langlex.c
+	g++ $(COPTS) parse.cpp -o parse.o
+
 langlex.c: lang.l
 	flex -o langlex.c lang.l
 
 lang: $(OBJS)
 	g++ $(OBJS) -o lang
-
