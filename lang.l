@@ -4,11 +4,12 @@
 // Author: Phil Howard phil.howard@oit.edu
 // Edited by: Dakota Kanner dakota.kanner@oit.edu
 
-#include "tokens.h"
+#include "cSymbolTable.h"
+#include "lex.h"
+#include "langparse.h"
 
 #define RETURN(a) return Return(a);
 static int Return(int val);
-
 %}
 
 %option noyywrap
@@ -16,14 +17,14 @@ static int Return(int val);
 %option nounput
 %option yylineno
 
-
-whitespace		[' '' '\t\n]
+    /* definitions go here. period is an example. */
+oper			[+\-*/%<!=]
 ident			[a-zA-Z_][a-zA-Z0-9_]*
-oper			[+\-*/&=%]|"&&"|"=="|"\|\|"
-floating		[+-]?[0-9]*\.?[0-9]+
-integer 		[+-]?[0-9]+
-punct			[\(\)\{\}\[\]\;\,\.]
-comment			\/\/.*
+integer 		[\-]?[0-9]+
+floating		[-]?[0-9]*\.?[0-9]+
+whitespace		[' '\t\n]+
+punct			[()\[\];,.]
+comment			"//".*$
 junk			.
 
 %%
@@ -35,22 +36,28 @@ junk			.
 "while"         RETURN(WHILE);
 "print"         RETURN(PRINT);
 "scan"          RETURN(SCAN);
-"int"           RETURN(INT);
+"int"           RETURN(INT_VAL);
 "float"         RETURN(FLOAT);
-"char"         	RETURN(CHAR);
 "struct"        RETURN(STRUCT);
-"return"        RETURN(RETURN_TOK);
-"end"        	RETURN(END);
-
-{comment}		{};
-{whitespace}	{};
-{ident}			RETURN(IDENTIFIER);
+{comment}		//Nothing
 {integer}		RETURN(INT_VAL);
 {floating}		RETURN(FLOAT_VAL);
-{oper}			RETURN(OPERATOR);
+{oper}			RETURN(yytext[0]);
 {punct}			RETURN(yytext[0]);
-{junk}			RETURN (JUNK_TOKEN);
-
+{ident}         {  
+                    yylval.symbol = symbolTableRoot->Insert(yytext);
+                    return (IDENTIFIER);
+                }
+"{"             {
+                    symbolTableRoot->IncreaseScope();  
+                    return yytext[0];
+                }
+"}"             {
+                    symbolTableRoot->DecreaseScope();
+                    return yytext[0];
+                }
+{whitespace}	//Nothing
+{junk}			RETURN(JUNK_TOKEN);
 %%
 
 // This function allows us to do extra processing on each token

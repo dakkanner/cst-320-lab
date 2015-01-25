@@ -39,18 +39,22 @@ void Error(std::string expecting)
 //*******************************************
 bool FindPROG()
 {
-    //Program
+    // Program
+	// PROG	-> STMTS end
 	
+	// Check if it's at the end already
 	int lToken = GetToken();
 	if (lToken != END)
 	{
 		UnGetToken();
+		// Find statements; error if there are none
 		if (!FindSTMTS()) 
 		{
 			Error("Program");
 			return false;
 		}
-			
+		
+		// Check for the "end"; error if not
 		lToken = GetToken();
 		if (lToken != END)
 		{
@@ -68,18 +72,25 @@ bool FindPROG()
 //*******************************************
 bool FindSTMTS()
 {
+    // Statements
+	// STMTS	-> STMT STMTS
+	// STMTS	-> NULL
+	
+	// Try to peel away first remaining statement
     if (!FindSTMT())
     {
-        int t = GetToken();
-        if (t == END)
+        int lToken = GetToken();
+        if (lToken == END)
         {
+			// Went to the end. Put it back.
             UnGetToken();
             return true;
         }
         UnGetToken();
+		// Recursively call itself for more statement finding
         if (!FindSTMTS()) 
             return true;
-    }     
+    }	// Recursively call itself for more statement finding
     else if (!FindSTMTS()) 
         return false;
 
@@ -88,12 +99,15 @@ bool FindSTMTS()
 //*******************************************
 bool FindSTMT()
 {
-    //Statement
+    // Statement
+	// STMT	-> EXPR ;
 	
+	// Find the expression
     if ( !FindEXPR() ) 
 		return false;
     
     int lToken = GetToken();
+	// Find the semicolon; error if not found
     if (lToken != ';')
     {
 		Error(";");
@@ -105,20 +119,25 @@ bool FindSTMT()
 //*******************************************
 bool FindEXPR()
 {
-    //Expression		
+    // Expression
+	// EXPR	-> (EXPR) EXPR’
+	// 		-> Term
 	int lToken = GetToken();
 	
 	if (lToken != '(')
 	{
 		UnGetToken();
+		// If it's not a (, it must be a term.
 		return FindTERM();
 	}
 	else
 	{
+		// Find the expression part of (EXPR)
 		if (!FindEXPR()) 
 			return false;
 	
 		lToken = GetToken();
+		// If there is a (, there must be a ) or an EXPR'
 		if (lToken != ')')
 		{
 			Error(")");
@@ -137,10 +156,14 @@ bool FindEXPR()
 //*******************************************
 bool FindEXPR_P()
 {
-    //Expression_P
+    // Expression prime
+	// EXPR’	-> PLUSOP (EXPR) EXPR’
+	// 			-> NULL
 	
+	// First thing found must be a +/- or nothing
 	if (FindPLUSOP()) 
 	{
+		// Error if any of the next steps fail
 		int lToken = GetToken();
 		if (lToken != '(')
 		{
@@ -167,6 +190,7 @@ bool FindPLUSOP()
 {
     //Plus Operator
 	
+	//If it's not a +/-, fail. Do not error.
     int lToken = GetToken();
     if (yytext[0] != '+' && yytext[0] != '-')
     {
@@ -178,9 +202,12 @@ bool FindPLUSOP()
 }
 //*******************************************
 bool FindTERM()
-{
-    //Term
+{		
+	// Term 
+	// TERM	-> [EXPR] TERM’
+	// 		-> number
 	
+	// Check if it's 
     int lToken = GetToken();
     if (lToken == INT_VAL || lToken == FLOAT_VAL)
     {
@@ -211,6 +238,10 @@ bool FindTERM()
 //*******************************************
 bool FindTERM_P()
 {		
+	// Term prime
+	// TERM’	-> TIMESOP [EXPR] TERM’
+	// 			-> NULL
+	
 	if (FindTIMESOP())
 	{
 		int lToken = GetToken();
@@ -242,7 +273,11 @@ bool FindTERM_P()
 bool FindTIMESOP()
 {	
     //Times Operator
+	// Term prime
+	// TERM’	-> *
+	// 			-> /
 	
+	//If it's not a * or /, fail. Do not error.
     int lToken = GetToken();
     if (yytext[0] != '*' && yytext[0] != '/')
     {

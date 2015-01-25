@@ -2,4 +2,23 @@
 Did not handle negative numbers (not explicitly mentioned in Word doc)
 You don't need your junk definition. the char definition handles all junk (but you should probably use the name 'junk', not 'char')
 
+Lab2 Feedback
+
+Your git repository had intermediate files (e.g. object files) in it. It should only have source files.
+
+You need to document your code with header blocks, etc.
+
+You did not fix your scanner as required (see Scanner Updates in Blackboard).
+
+parse.cpp had compilation warnings that should be fixed.
+
+You do not need to examine yytext[0] to figure out what the token is. The return value of yylex() gives you that info.
+
+Your code segfaulted on the following. Probably due to infinite recursion.
+
+(5)+(;
+(4) + ();
+
+Your code enters an infinite loop if the file does not have a ';' on the last statement and if there is not 'end'.
+
 
