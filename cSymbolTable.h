@@ -6,13 +6,13 @@
 #ifndef C_SYMBOL_TABLE_H
 #define C_SYMBOL_TABLE_H
 
-#include <stack>
+#include <deque>
 #include <string>
 #include <map>
 //#include <vector>
 
 using namespace std;
-//using std::stack;
+//using std::deque;
 //using std::map;
 //using std::vector;
 //using std::pair;
@@ -47,11 +47,11 @@ public:
 	void IncreaseScope();
 	void DecreaseScope();
 	cSymbol* Insert(string symb);
-	//cSymbol LookUpLocal(const string name);
-	//cSymbol LookUp(const string name);
+	cSymbol* LookUpLocal(const string name);
+	cSymbol* LookUp(const string name);
 
 protected:
-	stack<map<string, cSymbol*>*> symbolStack; 	// Collection containing stack of symbols hashed by name
+	deque<map<string, cSymbol*>*> symbolDeque; 	// Collection containing deque of symbols hashed by name
 };
 
 #endif

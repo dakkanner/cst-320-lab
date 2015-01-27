@@ -10,9 +10,9 @@
 ************************************************************************/
 cSymbolTable::cSymbolTable()
 {
-	//symbolStack = new vector<map<string, cSymbol>>();
+	//symbolDeque = new vector<map<string, cSymbol>>();
 	// Push inital map
-	symbolStack.push(new map<string, cSymbol*>());
+	symbolDeque.push_back(new map<string, cSymbol*>());
 }
 
 /************************************************************************
@@ -21,41 +21,42 @@ cSymbolTable::cSymbolTable()
 ************************************************************************/
 //cSymbolTable::~cSymbolTable()
 //{
-//	symbolStack->clear();
-//	delete symbolStack;
+//	symbolDeque->clear();
+//	delete symbolDeque;
 //}
 
 /************************************************************************
 * IncreaseScope();
-*		Adds a new layer to the top of the stack
+*		Adds a new layer to the top of the deque
 ************************************************************************/
 void cSymbolTable::IncreaseScope()
 {
-	symbolStack.push(new map<string, cSymbol*>());
+	symbolDeque.push_back(new map<string, cSymbol*>());
 }
 
 /************************************************************************
 * DecreaseScope();
-*		If possible, remove a layer from the top of the stack
+*		If possible, remove a layer from the top of the deque
 ************************************************************************/
 void cSymbolTable::DecreaseScope()
 {
-	symbolStack.pop();
+	symbolDeque.pop_back();
 }
 
 /************************************************************************
 * cSymbol* Insert(string symb)
 *		Insert a new symbol into the table
 ************************************************************************/
-cSymbol* cSymbolTable::Insert(string symb) {
+cSymbol* cSymbolTable::Insert(string symb) 
+{
     cSymbol * retVal = nullptr;
-    map<string,cSymbol*>::iterator Iter = symbolStack.top()->find(symb);
-    if (Iter == symbolStack.top()->end())
+
+    map<string,cSymbol*>::iterator Iter = symbolDeque.back()->find(symb);
+    if (Iter == symbolDeque.back()->end())
     {
         retVal = new cSymbol(symb);
-        symbolStack.top()->insert(pair<string,cSymbol*>(symb,retVal));
+        symbolDeque.back()->insert(pair<string,cSymbol*>(symb,retVal));
     }
-    
     else 
     {
         retVal = Iter->second;
@@ -67,48 +68,53 @@ cSymbol* cSymbolTable::Insert(string symb) {
 * cSymbol LookUpLocal(const string name);
 *		Returns the entry that matches the passed-in name for the top level
 ************************************************************************/
-//cSymbol cSymbolTable::LookUpLocal(const string name)
-//{
-//	// Can't find nothing
-//	if ( name.empty() )
-//	{
-//		throw new std::invalid_argument("Can't look up symbol without a name");
-//	}
-//	
-//	// Find it in the top-most map
-//	map<string, cSymbol>::iterator symb = symbolStack->back().find(name);
-//	if (symb != symbolStack->back().end())
-//	{
-//		return symb->second;
-//	}
-//	// Else return empty cSymbol
-//	return cSymbol();
-//}
-//
-///************************************************************************
-//* cSymbol LookUp(const string name);
-//*		Returns the entry that matches the passed-in name for all levels
-//************************************************************************/
-//cSymbol cSymbolTable::LookUp(const string name)
-//{
-//	// Can't find nothing
-//	if (name.empty())
-//	{
-//		throw new std::invalid_argument("Can't look up symbol without a name");
-//	}
-//	
-//	// Find the value in all the maps
-//	// Start at the top and work way down. Stop if found.
-//	for (vector<map<string, cSymbol>>::reverse_iterator rit = symbolStack->rbegin(); 
-//		rit != symbolStack->rend(); ++rit)
-//	{
-//		map<string, cSymbol>::iterator symb = rit->find(name);
-//		if (symb != rit->end())
-//		{
-//			return symb->second;
-//		}
-//	}
-//	
-//	return cSymbol();
-//}
-//
+cSymbol* cSymbolTable::LookUpLocal(const string name)
+{
+	cSymbol * retVal = nullptr;
+
+	// Can't find nothing
+	if ( name.empty() )
+	{
+		throw new std::invalid_argument("Can't look up symbol without a name");
+	}
+	
+	// Find it in the top-most map
+	map<string, cSymbol*>::iterator symb = symbolDeque.back()->find(name);
+	if (symb != symbolDeque.back()->end())
+	{
+		retVal = symb->second;
+	}
+	// Else return empty cSymbol
+	return retVal;
+}
+
+/************************************************************************
+* cSymbol LookUp(const string name);
+*		Returns the entry that matches the passed-in name for all levels
+************************************************************************/
+cSymbol* cSymbolTable::LookUp(const string name)
+{
+	cSymbol * retVal = nullptr;
+
+	// Can't find nothing
+	if (name.empty())
+	{
+		throw new std::invalid_argument("Can't look up symbol without a name");
+	}
+
+	// Find the highest-level matching symbol
+	for (int i = symbolDeque.size()-1;
+		i >= 0; --i)
+	{
+		map<string, cSymbol*>::iterator symb = map<string, cSymbol*>::iterator();
+		symb = symbolDeque[i]->find(name);
+
+		if (symb != symbolDeque[i]->end())
+		{
+			retVal = symb->second;
+			break;
+		}
+	}
+	
+	return retVal;
+}

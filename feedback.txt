@@ -21,4 +21,21 @@ Your code segfaulted on the following. Probably due to infinite recursion.
 
 Your code enters an infinite loop if the file does not have a ';' on the last statement and if there is not 'end'.
 
+//********************************
+Lab 3 Feedback
+
+LATE: 
+
+Your git repository has intermediate files and other stuff that should not be there.
+
+Your build has warnings.
+
+in cSymbol, you set both the name and value to the same thing. I;m not sure what the value is supposed to be.
+
+Your cSymbol class has a bunch of code commented out. Where did this code come from?
+
+Did not implement the local and global lookups. These will be needed for Lab 4.
+
+You changed scope in the scanner, not the parser, so you did not complet Part B.
+
 

@@ -45,20 +45,13 @@ class cSymbol
 public:
 	cSymbol();
 	cSymbol(std::string value);
-	//~cSymbol();
-	//cSymbol& operator= (const cSymbol& rhs);
-	//int GetSequence() const;
-	//void SetSequence(int sequence);
-	//string GetName() const;
-	//void SetName(string name);
-	//string GetValue() const;
-	//void SetValue(string value);
-	//bool IsEmpty() const;
+	cSymbol& operator= (const cSymbol& rhs);
+	string GetValue() const;
+	void SetValue(string value);
 	virtual string toString();
 
 protected:
 	int mSequence; 	// Unique integer identifier of symbol
-	string mName;	// Name of symbol
 	string mValue;	// Value of symbol
 	static int symbolCount;
 };
