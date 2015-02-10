@@ -30,30 +30,40 @@ junk			.
 %%
 
 "if"            RETURN(IF);
-"then"          RETURN(THEN);
 "else"          RETURN(ELSE);
-"for"           RETURN(FOR);
 "while"         RETURN(WHILE);
 "print"         RETURN(PRINT);
 "scan"          RETURN(SCAN);
-"int"           RETURN(INT_VAL);
-"float"         RETURN(FLOAT);
 "struct"        RETURN(STRUCT);
+"return"		RETURN(RETURN);
 {comment}		//Nothing
-{integer}		RETURN(INT_VAL);
-{floating}		RETURN(FLOAT_VAL);
 {oper}			RETURN(yytext[0]);
 {punct}			RETURN(yytext[0]);
+{integer}		{
+					yylval.int_val = atoi(yytext);
+					RETURN(INT_VAL);
+				}
+{floating}		{
+					yylval.float_val = atof(yytext);
+					RETURN(FLOAT_VAL);
+				}
 {ident}         {  
-                    yylval.symbol = symbolTableRoot->Insert(yytext);
+					yylval.symbol = symbolTableRoot->LookUp(yytext);
+					if(yylval.symbol != nullptr)
+					{
+						if(yylval.symbol->IsType())
+							RETURN(TYPE_ID);
+					}
+					else
+					{
+						yylval.symbol = symbolTableRoot->Insert(yytext);
+					}
                     return (IDENTIFIER);
                 }
 "{"             {
-                    symbolTableRoot->IncreaseScope();  
                     return yytext[0];
                 }
 "}"             {
-                    symbolTableRoot->DecreaseScope();
                     return yytext[0];
                 }
 {whitespace}	//Nothing

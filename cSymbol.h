@@ -1,7 +1,7 @@
 /***********************************************************
 * Author:				Dakota Kanner
 * Filename:				cSymbol.h
-************************************************************/
+************************************************************/ 
 
 #ifndef C_SYMBOL_H
 #define C_SYMBOL_H
@@ -37,22 +37,24 @@ using namespace std;
 * int GetSymbolCount();
 *		Get and increment/decrement the total symbol count
 *
-* bool IsTypeUseEmpty();
-*		Returns true if mType or mUse is empty
+* bool IsType();
+*		Returns the type
 ************************************************************************/
 class cSymbol
 {
 public:
-	cSymbol();
-	cSymbol(std::string value);
-	cSymbol& operator= (const cSymbol& rhs);
-	string GetValue() const;
-	void SetValue(string value);
-	virtual string toString();
+	cSymbol(string value, bool type = false);
+	cSymbol& operator= (cSymbol& rhs);
+	string GetSymbol();
+	void SetSymbol(string value);
+	string toString();
+	bool IsType();
+	void SetType();
 
 protected:
 	int mSequence; 	// Unique integer identifier of symbol
 	string mValue;	// Value of symbol
+	bool mType;
 	static int symbolCount;
 };
 

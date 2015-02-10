@@ -9,49 +9,49 @@
 #include <deque>
 #include <string>
 #include <map>
-//#include <vector>
 
 using namespace std;
-//using std::deque;
-//using std::map;
-//using std::vector;
-//using std::pair;
 
 #include "cSymbol.h"
 
 
 /************************************************************************
+* static cSymbolTable* GetInstance();
+* 		Returns the instance of the symbol table
+* 
 * cSymbolTable();
 *		C'tor (default), creates a new map
 *
 * ~cSymbolTable();
 *		D'tor, deletes allocated memory
 *
-* bool Insert(const string name, const cSymbol symb);
+* bool Insert(string name, cSymbol symb);
 *		Insert a new symbol into the table
 *
-* bool Find(const string name);
+* bool Find(string name);
 *		Returns true if the passed-in name exists
 *
-* cSymbol LookUpLocal(const string name);
+* cSymbol LookUpLocal(string name);
 *		Returns the entry that matches the passed-in name for the top level
 *
-* cSymbol LookUp(const string name);
+* cSymbol LookUp(string name);
 *		Returns the entry that matches the passed-in name for all levels
 ************************************************************************/
 class cSymbolTable
 {
 public:
-	cSymbolTable();
+	static cSymbolTable* GetInstance();
 	//~cSymbolTable();
-	void IncreaseScope();
+	map<string,cSymbol*>* IncreaseScope();
 	void DecreaseScope();
-	cSymbol* Insert(string symb);
-	cSymbol* LookUpLocal(const string name);
-	cSymbol* LookUp(const string name);
+	cSymbol* Insert(string symb, bool type = false);
+	cSymbol* LookUpLocal(string name);
+	cSymbol* LookUp(string name);
 
 protected:
+	cSymbolTable();
 	deque<map<string, cSymbol*>*> symbolDeque; 	// Collection containing deque of symbols hashed by name
+	static cSymbolTable* mSymbols;
 };
 
 #endif

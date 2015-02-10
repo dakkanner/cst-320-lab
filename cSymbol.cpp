@@ -1,55 +1,46 @@
 /***********************************************************
 * Author:				Dakota Kanner
 * Filename:				cSymbol.cpp
-************************************************************/
+************************************************************/ 
 
 #include "cSymbol.h"
 int cSymbol::symbolCount = 0;
 
 /************************************************************************
-* cSymbol();
-*		C'tor (default)
-************************************************************************/
-cSymbol::cSymbol()
-{ 
-	mSequence = ++symbolCount;
-	mValue = "";
-}
-
-/************************************************************************
 * cSymbol(string value);
 *		C'tor (with params)
 ************************************************************************/
-cSymbol::cSymbol(std::string value)
+cSymbol::cSymbol(std::string value, bool type)
+	:mValue (value), mType(type)
 {
 	mSequence = ++symbolCount;
-	mValue = value;
 }
 
 /************************************************************************
-* operator= (const cSymbol& rhs)
+* operator= (cSymbol& rhs)
 *		Allows a deep copy when using op-equals
 ************************************************************************/
-cSymbol& cSymbol::operator= (const cSymbol& rhs)
+cSymbol& cSymbol::operator= (cSymbol& rhs)
 {
 	mSequence = rhs.mSequence;
 	mValue = rhs.mValue;
+	mType = rhs.mType;
 
 	return *this;
 }
 
 /************************************************************************
-* string GetValue() const;
+* string GetSymbol();
 * 		Getters for all data member
 *
-* void SetValue(string value);
+* void SetSymbol(string value);
 *			Setters for all data member
 ************************************************************************/
-string cSymbol::GetValue() const
+string cSymbol::GetSymbol() 
 {
 	return mValue;
 }
-void cSymbol::SetValue(string value)
+void cSymbol::SetSymbol(string value)
 {
 	mValue = value;
 }
@@ -60,5 +51,21 @@ void cSymbol::SetValue(string value)
 ************************************************************************/
 string cSymbol::toString()
 {
-	return "sym: " + mValue + " " + to_string(mSequence);;
+	return "sym: " + mValue + ' ' + to_string(mSequence);;
 }
+
+/************************************************************************
+* bool IsType();
+*		Returns the type
+* void SetType();
+*		Sets the type to true
+************************************************************************/
+bool cSymbol::IsType()
+{
+    return mType;
+}
+void cSymbol::SetType()
+{
+    mType = true;
+}
+
