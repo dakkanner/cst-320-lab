@@ -19,7 +19,13 @@ using namespace std;
 class cAstNode
 {
 public:
+	cAstNode() 
+	{ }
+	virtual bool GetSemanticError()
+		{ return mSemanticError; }
 	virtual string toString() = 0;
-
+	
+protected:
+	bool mSemanticError;
 };
 #endif

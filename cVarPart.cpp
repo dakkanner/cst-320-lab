@@ -9,8 +9,8 @@
 * cVarPart();
 *		C'tor (default)
 ************************************************************************/
-cVarPart::cVarPart(cSymbol* val, cArrayVal* arr)
-	:mVal(val), mArr(arr)
+cVarPart::cVarPart(cSymbol* id, cArrayVal* arr)
+	:mID(id), mArr(arr)
 { }
 
 /************************************************************************
@@ -19,7 +19,7 @@ cVarPart::cVarPart(cSymbol* val, cArrayVal* arr)
 ************************************************************************/
 string cVarPart::toString()
 {
-	string retValue(mVal->toString());
+	string retValue(mID->toString());
 	
 	if(mArr != NULL)
 	{
@@ -27,4 +27,61 @@ string cVarPart::toString()
 	}
 	
 	return retValue;
+}
+
+/************************************************************************
+* virtual string GetType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cVarPart::GetType()
+{
+	return mID->GetType();
+}
+
+/************************************************************************
+* virtual string GetBaseType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cVarPart::GetBaseType()
+{
+	if(mArr != NULL)
+		return mID->GetBaseType();
+	
+	return GetType();
+}
+
+/************************************************************************
+* cSymbol* cVarPart::GetId()
+*		Virtual function to get the base type of the node
+************************************************************************/
+cSymbol* cVarPart::GetId()
+{
+	return mID;
+}
+
+/************************************************************************
+* void SetId(cSymbol* id);
+*		Virtual function to get the base type of the node
+************************************************************************/
+void cVarPart::SetId(cSymbol* id)
+{
+	mID = id;
+}
+
+/************************************************************************
+* cDeclNode* GetTypeRef();
+*		Virtual function to get the base type of the node
+************************************************************************/
+cDeclNode* cVarPart::GetTypeRef()
+{
+	return mID->GetRef();
+}
+
+/************************************************************************
+* string GetSymbol();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cVarPart::GetSymbol()
+{
+	return mID->GetSymbol();
 }

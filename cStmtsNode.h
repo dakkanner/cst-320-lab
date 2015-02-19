@@ -27,10 +27,10 @@ class cStmtsNode : public cAstNode
 {
 public:
 	cStmtsNode();
-	string toString();
-	void Add(cStmtNode* newNode);
+	virtual string toString();
+	void Add(cStmtNode* newNode = NULL);
 
-protected:
+private:
 	list<cStmtNode*> mStmts;
 };
 #endif

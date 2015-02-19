@@ -20,10 +20,10 @@
 class cScanNode : public cStmtNode
 {
 public:
-	cScanNode(cExprNode* expr);
-	string toString();
+	cScanNode(cExprNode* expr = NULL);
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 };
 #endif

@@ -26,10 +26,10 @@ class cDeclsNode : public cAstNode
 {
 public:
 	cDeclsNode();
-	string toString();
+	virtual string toString();
 	void Add(cDeclNode* newNode);
 
-protected:
+private:
 	list<cDeclNode*> mDecls;
 };
 #endif

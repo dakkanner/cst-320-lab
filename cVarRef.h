@@ -10,6 +10,10 @@
 
 #include "cVarPart.h"
 #include "cExprNode.h"
+#include "cSymbolTable.h"
+#include "cStructDecl.h"
+
+extern cSymbolTable* symbolTableRoot;
 
 /************************************************************************
 * cVarRef();
@@ -25,10 +29,18 @@ class cVarRef : public cExprNode
 {
 public:
 	cVarRef();
-	string toString();
+	virtual string toString();
+	virtual string GetType();
+	virtual string GetBaseType();
 	void Add(cVarPart* part);
+	cDeclNode* GetTypeRef();
+	string VRef();
+	bool IsSymbolInParent(cVarPart* part);
+	string GetError();
+	string GetSymbol();
 
-protected:
+private:
 	list<cVarPart*> mVarParts;
+	string mError; 
 };
 #endif

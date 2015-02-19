@@ -18,14 +18,22 @@
 *
 * string toString();
 *		Converts the data to a string.
+*
+* virtual string GetType();
+*		Virtual function to get the type of the node
+*
+* virtual string GetBaseType();
+*		Virtual function to get the base type of the node
 ************************************************************************/
 class cFuncCall : public cStmtNode, public cExprNode
 {
 public:
 	cFuncCall(cSymbol* id, cParamsNode* params);
-	string toString();
+	virtual string toString();
+	virtual string GetType();
+	virtual string GetBaseType();
 
-protected:
+private:
 	cSymbol* mID;
 	cParamsNode* mParams;
 };

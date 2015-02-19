@@ -30,10 +30,9 @@
 #include "cParamSpec.h"
 #include "cParamsNode.h"
 #include "cParamsSpec.h"
-#include "cFuncPrefix.h"
-#include "cFuncHeader.h"
 #include "cFuncDecl.h"
 #include "cFuncCall.h"
+#include "cArrayDecl.h"
 #include "langparse.h"
 
 extern int yyparse();
@@ -42,3 +41,4 @@ extern char *yytext;
 extern int yylineno;
 extern FILE *yyin;
 extern cSymbolTable *symbolTableRoot;
+extern int yynerrs;

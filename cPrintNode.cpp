@@ -19,5 +19,7 @@ cPrintNode::cPrintNode(cExprNode* expr)
 ************************************************************************/
 string cPrintNode::toString()
 {
-	return "PRINT: " + mExpr->toString();
+	if(mExpr != NULL)
+		return "PRINT: " + mExpr->toString();
+	return "";
 }

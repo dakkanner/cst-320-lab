@@ -24,10 +24,10 @@
 class cPrintNode : public cStmtNode
 {
 public:
-	cPrintNode(cExprNode* expr);
-	string toString();
+	cPrintNode(cExprNode* expr = NULL);
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 };
 #endif

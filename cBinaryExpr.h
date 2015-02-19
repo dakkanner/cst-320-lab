@@ -21,9 +21,11 @@ class cBinaryExpr : public cExprNode
 {
 public:
 	cBinaryExpr(cExprNode* lhs, char oper, cExprNode* rhs);
-	string toString();
+	virtual string toString();
+	virtual string GetType();
+	virtual string GetBaseType();
 
-protected:
+private:
 	cExprNode* mLHS;
 	cExprNode* mRHS;
 	char mOper;

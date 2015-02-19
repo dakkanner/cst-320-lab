@@ -10,9 +10,12 @@
 #include <string>
 #include <map>
 
+#include <iostream>
+
 using namespace std;
 
 #include "cSymbol.h"
+#include "SymanticError.h"
 
 
 /************************************************************************
@@ -28,6 +31,9 @@ using namespace std;
 * bool Insert(string name, cSymbol symb);
 *		Insert a new symbol into the table
 *
+* bool Remove(cSymbol* symbol);
+*		Removes a symbol from the table
+*
 * bool Find(string name);
 *		Returns true if the passed-in name exists
 *
@@ -41,14 +47,14 @@ class cSymbolTable
 {
 public:
 	static cSymbolTable* GetInstance();
-	//~cSymbolTable();
 	map<string,cSymbol*>* IncreaseScope();
 	void DecreaseScope();
 	cSymbol* Insert(string symb, bool type = false);
+	bool Remove(cSymbol* symb);
 	cSymbol* LookUpLocal(string name);
 	cSymbol* LookUp(string name);
 
-protected:
+private:
 	cSymbolTable();
 	deque<map<string, cSymbol*>*> symbolDeque; 	// Collection containing deque of symbols hashed by name
 	static cSymbolTable* mSymbols;

@@ -15,20 +15,27 @@ using std::map;
 #include "cSymbol.h"
 
 /************************************************************************
-* cStructDecl(cSymbolTable* symbolTable, cDeclsNode* decls, cSymbol* symbol);
+* cStructDecl(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cSymbol* symbol);
 *		C'tor (with params)
 *
 * string toString();
 *		Converts the data to a string.
+*
+* void PrintSymbolTable()
+*		Prints all of the symbol table
+*
+* cSymbol* Find(string symbol)
+*		Finds a symbol in the symbol table
 ************************************************************************/
 class cStructDecl : public cDeclNode
 {
 public:
-	cStructDecl(cSymbolTable* symbolTable, cDeclsNode* decls, cSymbol* symbol);
-	string toString();
+	cStructDecl(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cSymbol* symbol);
+	virtual string toString();
+	cSymbol* Find(string name);
 
-protected:
-	cSymbolTable* mSymbolTable;
+private:
+	map<string,cSymbol*>* mSymbolTable;
 	cDeclsNode* mDecls;
 	cSymbol* mSymbol;
 };

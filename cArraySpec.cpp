@@ -25,7 +25,7 @@ string cArraySpec::toString()
 		retValue += ' ' + std::to_string(i);
 	}
 	
-	retValue += ")\n";
+	retValue += ")";
 	
 	return retValue;
 }

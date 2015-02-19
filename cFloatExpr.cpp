@@ -21,3 +21,21 @@ string cFloatExpr::toString()
 {
 	return "(EXPR: " + std::to_string(mVal) + ')';
 }
+
+/************************************************************************
+* virtual string GetType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cFloatExpr::GetType()
+{
+	return "float";
+}
+
+/************************************************************************
+* virtual string GetBaseType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cFloatExpr::GetBaseType()
+{
+	return GetType();
+}

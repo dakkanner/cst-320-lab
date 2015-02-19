@@ -25,10 +25,10 @@ class cArraySpec
 {
 public:
 	cArraySpec();
-	string toString();
+	virtual string toString();
 	void Add(int newNode);
 
-protected:
+private:
 	list<int> mArr;
 };
 #endif

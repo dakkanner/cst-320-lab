@@ -19,5 +19,8 @@ cScanNode::cScanNode(cExprNode* expr)
 ************************************************************************/
 string cScanNode::toString()
 {
-	return "SCAN: " + mExpr->toString();
+	if(mExpr != NULL)
+		return "SCAN: " + mExpr->toString();
+	
+	return "";
 }

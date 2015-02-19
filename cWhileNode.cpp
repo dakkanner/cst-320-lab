@@ -19,5 +19,12 @@ cWhileNode::cWhileNode(cExprNode* expr, cStmtNode* stmt)
 ************************************************************************/
 string cWhileNode::toString()
 {
-    return "(WHILE: " + mExpr->toString() + '\n' + mStmt->toString() + "\n)";
+    string retVal("(WHILE: ");
+	
+	if(mExpr != NULL)
+		retVal += mExpr->toString() + '\n';
+	if(mStmt != NULL)
+		retVal += mStmt->toString() + "\n)";
+	
+	return retVal;
 }

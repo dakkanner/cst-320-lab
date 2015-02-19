@@ -9,52 +9,68 @@
 #pragma once
 #include <string>
 using namespace std;
-//using std::string;
-//using std::to_string;
+#include "cAstNode.h"
+#include "cDeclNode.h"
 
 /************************************************************************
-* cSymbol();
-*		C'tor (default)
-*
-* cSymbol(string type, string use, string value);
+* cSymbol(string value, bool isType = false);
 *		C'tor (with params)
 *
-* ~cSymbol();
-*		D'tor
+* string cSymbol::toString();
+* 		Prints the value and sequence number of the symbol
 *
-* void SetType(string type);
-* void SetUse(string use);
-* void SetValue(string value);
-*		Setters for all data members
+* string GetSymbol();
+* 		Getter for the symbol name
+* void SetSymbol(string value);
+*		Setter for the symbol name
 *
-* string GetType();
-* string GetUse();
-* string GetValue();
-*		Getters for all data members
+* void SetTypeRef(string typeRef, string baseType, cDeclNode* decl = NULL);
+* 		Sets the type refernece, the base, and the decl_node
 *
-* void IncrementSymbolCount();
+* bool GetIsType();
+*		Returns whether it is a type
+* void SetIsType(bool isType = true);
+*  		Sets whether the symbol is a type
+* string GetType()
+* 		Returns the type
+* string GetBaseType()
+* 		Returns the type of the bas
+* bool GetIsDeclared();
+*		Gets whether the symbol has been declared
+* void SetIsDeclared(bool isDeclared = true);
+* 		Sets whether the symbol has been declared
+* cDeclNode* GetRef();
+*		Returns the decl_node for the symbol
 * void DecrementSymbolCount();
-* int GetSymbolCount();
-*		Get and increment/decrement the total symbol count
-*
-* bool IsType();
-*		Returns the type
+* 		Reduces the count of total symbols
 ************************************************************************/
 class cSymbol
 {
 public:
-	cSymbol(string value, bool type = false);
-	cSymbol& operator= (cSymbol& rhs);
+	cSymbol(string value, bool isType = false);
+	
+	virtual string toString();
+	virtual string GetType();
+	virtual string GetBaseType();
+	
 	string GetSymbol();
 	void SetSymbol(string value);
-	string toString();
-	bool IsType();
-	void SetType();
+	void SetTypeRef(string typeRef, string baseType, cDeclNode* decl = NULL);
+	bool GetIsType();
+	void SetIsType(bool isType = true);
+	bool GetIsDeclared();
+	void SetIsDeclared(bool isDeclared = true);
+	cDeclNode* GetRef();
+	void DecrementSymbolCount();
 
-protected:
-	int mSequence; 	// Unique integer identifier of symbol
-	string mValue;	// Value of symbol
-	bool mType;
+private:
+	int mSequence; 	  // Unique integer identifier of symbol
+	string mValue;	  // Value of symbol
+	bool mIsType; 	  // True if this is a type
+	bool mIsDeclared; // True if this is declared
+	string mTypeRef;  // Reference for the type of the symbol
+	string mBaseType;
+	cDeclNode* mDecl;
 	static int symbolCount;
 };
 

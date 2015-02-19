@@ -38,4 +38,19 @@ Did not implement the local and global lookups. These will be needed for Lab 4.
 
 You changed scope in the scanner, not the parser, so you did not complet Part B.
 
+// *************************************
+Lab 4 Feedback
 
+-10 Your git repository has intermediate files. It should only contain source.
+
+Minor problems with spacing in your output. Check the Word file to see where literal spaces belong.
+
+-10 When you declare a function in an inner scope with the same name as a function in an outer scope, the inner scope function should hide the outer name (just like with variables).
+
+-5 The symbols used for the parameters in a function definition should be the same (same sequence number) as the symbols used in a prior declaration.
+
+I'm not sure why cExprNode has a protected member variable that is a cExprNode.How is it used?
+
+Your toString() functions should all be declared virtual, and not all of them were. Technically, the bottom layer of your class hierarchy doesn't need "virtual", but you never know when you are going to sub-class something.
+
++10% for working individually

@@ -1,25 +1,32 @@
 /***********************************************************
 * Author:				Dakota Kanner
-* Filename:				cReturnNode.cpp
+* Filename:				cArrayDecl.cpp
 ************************************************************/
 
-#include "cReturnNode.h"
+#include "cArrayDecl.h"
 
 /************************************************************************
-* cReturnNode(cExprNode* expr);
-*		C'tor (default)
+* cArrayDecl(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
+*		C'tor (with params)
 ************************************************************************/
-cReturnNode::cReturnNode(cExprNode* expr)
-	:mExpr(expr)
+cArrayDecl::cArrayDecl(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec)
+	:mTypeID(typeID), mID(id), mArrSpec(arrSpec)
 { }
 
 /************************************************************************
 * string toString();
 *		Converts the data to a string.
 ************************************************************************/
-string cReturnNode::toString()
+string cArrayDecl::toString()
 {
-	if(mExpr != NULL)
-		return "RETURN: " + mExpr->toString();
-	return "";
+	string retValue("ARRAY: ");
+	
+	retValue += mTypeID->toString() + ' ' + mID->toString();
+	
+	if(mArrSpec != NULL)
+	{
+		retValue += ' ' + mArrSpec->toString();
+	}
+	
+	return retValue;
 }

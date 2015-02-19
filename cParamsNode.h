@@ -26,10 +26,10 @@ class cParamsNode : public cStmtNode
 {
 public:
 	cParamsNode();
-	string toString();
+	virtual string toString();
 	void Add(cParamNode* newNode);
 
-protected:
+private:
 	list<cParamNode*> mParams;
 };
 #endif

@@ -26,10 +26,10 @@ class cArrayVal
 {
 public:
 	cArrayVal();
-	string toString();
+	virtual string toString();
 	void Add(cExprNode* newNode);
 
-protected:
+private:
 	list<cExprNode*> mVals;
 };
 #endif

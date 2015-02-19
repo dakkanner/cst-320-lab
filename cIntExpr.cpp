@@ -21,3 +21,24 @@ string cIntExpr::toString()
 {
 	return "(EXPR: " + std::to_string(mVal) + ')';
 }
+
+
+/************************************************************************
+* virtual string GetType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cIntExpr::GetType()
+{
+	if(mVal >= -128 && mVal < 128)
+        return "char";
+	return "int";
+}
+
+/************************************************************************
+* virtual string GetBaseType();
+*		Pure virtual function to get the base type of the node
+************************************************************************/
+string cIntExpr::GetBaseType()
+{
+	return GetType();
+}

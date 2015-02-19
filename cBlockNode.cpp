@@ -6,10 +6,10 @@
 #include "cBlockNode.h"
 
 /************************************************************************
-* cBlockNode(cSymbolTable* symbolTable, cDeclsNode* decls, cStmtsNode* stmts);
+* cBlockNode(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cStmtsNode* stmts);
 *		C'tor
 ************************************************************************/
-cBlockNode::cBlockNode(cSymbolTable* symbolTable, cDeclsNode* decls, cStmtsNode* stmts)
+cBlockNode::cBlockNode(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cStmtsNode* stmts)
 	:mSymbolTable(symbolTable), mDecls(decls), mStmts(stmts)
 { }
 

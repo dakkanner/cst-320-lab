@@ -22,7 +22,7 @@ using std::string;
 ************************************************************************/
 class cStmtNode : public cAstNode
 {
-public:
-	virtual string toString() = 0;
+//public:
+//	virtual string toString() = 0;
 };
 #endif

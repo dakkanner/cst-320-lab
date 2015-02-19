@@ -16,14 +16,22 @@
 *
 * string toString();
 *		Converts the data to a string.
+*
+* virtual string GetType();
+*		Virtual function to get the type of the node
+*
+* virtual string GetBaseType();
+*		Virtual function to get the base type of the node
 ************************************************************************/
 class cFloatExpr : public cExprNode
 {
 public:
-	cFloatExpr(float val);
-	string toString();
+	cFloatExpr(float val = -1.0);
+	virtual string toString();
+	virtual string GetType();
+	virtual string GetBaseType();
 
-protected:
+private:
 	float mVal;
 };
 #endif

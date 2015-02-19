@@ -22,7 +22,7 @@ oper			[+\-*/%<!=]
 ident			[a-zA-Z_][a-zA-Z0-9_]*
 integer 		[\-]?[0-9]+
 floating		[-]?[0-9]*\.?[0-9]+
-whitespace		[' '\t\n]+
+whitespace		[' '\t\n\r]+
 punct			[()\[\];,.]
 comment			"//".*$
 junk			.
@@ -36,6 +36,7 @@ junk			.
 "scan"          RETURN(SCAN);
 "struct"        RETURN(STRUCT);
 "return"		RETURN(RETURN);
+"array"			RETURN(ARRAY);
 {comment}		//Nothing
 {oper}			RETURN(yytext[0]);
 {punct}			RETURN(yytext[0]);
@@ -51,13 +52,14 @@ junk			.
 					yylval.symbol = symbolTableRoot->LookUp(yytext);
 					if(yylval.symbol != nullptr)
 					{
-						if(yylval.symbol->IsType())
+						if(yylval.symbol->GetIsType())
 							RETURN(TYPE_ID);
 					}
 					else
 					{
-						yylval.symbol = symbolTableRoot->Insert(yytext);
+						yylval.symbol = new cSymbol(yytext);
 					}
+					//return yytext[0];
                     return (IDENTIFIER);
                 }
 "{"             {

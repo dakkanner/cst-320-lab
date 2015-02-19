@@ -7,6 +7,8 @@
 #define C_PARAMS_SPEC_H
 
 #pragma once
+#include <list>
+using std::list;
 #include "cStmtNode.h"
 #include "cParamSpec.h"
 
@@ -24,10 +26,10 @@ class cParamsSpec : public cStmtNode
 {
 public:
 	cParamsSpec();
-	string toString();
+	virtual string toString();
 	void Add(cParamSpec* newNode);
 
-protected:
+private:
 	list<cParamSpec*> mParams;
 };
 #endif

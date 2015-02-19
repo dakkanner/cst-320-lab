@@ -21,9 +21,9 @@ class cIfNode : public cStmtNode
 {
 public:
 	cIfNode(cExprNode* expr, cStmtNode* stmt1, cStmtNode* stmt2 = NULL);
-	string toString();
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 	cStmtNode* mStmt1;
 	cStmtNode* mStmt2;

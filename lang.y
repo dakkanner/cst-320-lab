@@ -15,7 +15,7 @@
 	double          float_val;
 	cAstNode*       ast_node;
 	cSymbol*        symbol;
-	cSymbolTable*   sym_table;
+	map<string,cSymbol*>*   sym_table;
 	cBlockNode*     block_node;
 	cDeclNode*      decl_node;
 	cDeclsNode*     decls_node;
@@ -30,14 +30,12 @@
     cParamsNode*    params_node;
     cParamsSpec*    params_spec;
     cParamSpec*     param_spec;
-    cFuncHeader*    func_header;
-    cFuncPrefix*    func_prefix;
     cFuncCall*      func_node;
 	}
 	
 %{
-    int yyerror(const char *msg);
-
+    int yyerror(string msg);
+	void semantic_error(string msg);
     cAstNode *yyast_root;
 %}
 
@@ -53,6 +51,7 @@
 %token  STRUCT
 %token  RETURN
 %token  JUNK_TOKEN
+%token  ARRAY
 
 %type <ast_node> program
 %type <block_node> block
@@ -62,9 +61,10 @@
 %type <decl_node> decl
 %type <decl_node> var_decl
 %type <decl_node> struct_decl
+%type <decl_node> array_decl
 %type <decl_node> func_decl
-%type <func_header>  func_header
-%type <func_prefix>  func_prefix
+%type <decl_node>  func_header
+%type <symbol>  func_prefix
 %type <func_node> func_call
 %type <params_spec> paramsspec
 %type <param_spec> paramspec
@@ -97,7 +97,7 @@ block:  open decls stmts close  {
 									$$ = new cBlockNode($1, NULL, $2);
 								}
 open:   '{'                     {
-									symbolTableRoot->IncreaseScope();
+									$$ = symbolTableRoot->IncreaseScope();
 								}
 close:  '}'                     {
 									symbolTableRoot->DecreaseScope();
@@ -119,50 +119,108 @@ decl:       var_decl ';'        {
         |   func_decl           {
 									$$ = $1;
 								}
+        |   array_decl ';'      {
+									$$ = $1;
+								}
         |   error ';'           {
 									
 								}
-var_decl:   TYPE_ID IDENTIFIER arrayspec    
-                                {
-									$2 = symbolTableRoot->Insert($2->GetSymbol());
-									$$ = new cVarNode($1, $2, $3);
-								}
-        |   struct_decl IDENTIFIER arrayspec
-                                {
-									
-								}
+var_decl:   TYPE_ID IDENTIFIER
+					{					
+						if(symbolTableRoot->LookUpLocal($2->GetSymbol()) != NULL && $2->GetIsDeclared())
+						{
+							$$ = nullptr;
+							semantic_error("Symbol " + $2->GetSymbol() + " already defined in current scope");
+							YYERROR;
+						}
+						else
+						{
+							$2 = symbolTableRoot->Insert($2->GetSymbol());
+							$2->SetIsDeclared();
+							$$ = new cVarNode($1, $2);
+							$2->SetTypeRef($1->GetType(), $1->GetBaseType(), $1->GetRef());
+						}
+					}
+array_decl: ARRAY TYPE_ID IDENTIFIER arrayspec
+					{
+						if(symbolTableRoot->LookUpLocal($3->GetSymbol()) != NULL && $3->GetIsDeclared())
+						{
+							$$ = nullptr;
+							semantic_error("Symbol " + $3->GetSymbol() + " already defined in current scope");
+							YYERROR;
+						}
+						else
+						{
+							$3 = symbolTableRoot->Insert($3->GetSymbol());
+							$3->SetIsType();
+							$3->SetIsDeclared();
+							$$ = new cArrayDecl($2, $3, $4);
+							$3->SetTypeRef($3->GetSymbol(), $2->GetSymbol(), $$);
+						}
+					}
 struct_decl:  STRUCT open decls close IDENTIFIER    
-                                {
-									$5->SetType();
-									$$ = new cStructDecl($2, $3, $5);
-								}
+					{
+						//cout << "CALLED struct_decl:  STRUCT open decls close IDENTIFIER" << endl;
+						
+						if(symbolTableRoot->LookUpLocal($5->GetSymbol()) != NULL && $5->GetIsDeclared())
+						{
+							$$ = nullptr;
+							semantic_error("Symbol " + $5->GetSymbol() + " already defined in current scope");
+							YYERROR;
+						}
+						else
+						{
+							$5 = symbolTableRoot->Insert($5->GetSymbol());
+							$5->SetIsType();
+							$5->SetIsDeclared();
+							$$ = new cStructDecl($2, $3, $5);
+							$5->SetTypeRef($5->GetSymbol(), $5->GetSymbol(), $$);
+						}
+					}
 func_decl:  func_header ';'
                                 {
-									$$ = new cFuncDecl($1);
+									$$ = $1;
 									symbolTableRoot->DecreaseScope();
 								}
         |   func_header  '{' decls stmts '}'
                                 {
-									$$ = new cFuncDecl($1, $3, $4);
+									$$ = $1;
+									cFuncDecl* funcDcl = dynamic_cast<cFuncDecl*>($$);
+									funcDcl->SetDecls($3);
+									funcDcl->SetStmts($4);
 									symbolTableRoot->DecreaseScope();
 								}
         |   func_header  '{' stmts '}'
                                 {
-									$$ = new cFuncDecl($1, nullptr, $3);
+									$$ = $1;
+									dynamic_cast<cFuncDecl*>($$)->SetStmts($3);
 									symbolTableRoot->DecreaseScope();
 								}
 func_header: func_prefix paramsspec ')'
                                 {
-									$$ = new cFuncHeader($1, $2);
+									$$ = new cFuncDecl($1, $2);
 								}
         |    func_prefix ')'    {
-									$$ = new cFuncHeader($1);
+									$$ = new cFuncDecl($1);
 								}
 func_prefix: TYPE_ID IDENTIFIER '('
-                                {
-									symbolTableRoot->IncreaseScope();
-									$$ = new cFuncPrefix($1, $2);
-								}
+					{
+						//cout << "CALLED struct_decl:  STRUCT open decls close IDENTIFIER" << endl;
+						
+						if(symbolTableRoot->LookUpLocal($2->GetSymbol()) && $2->GetIsDeclared())
+						{
+							$$ = nullptr;
+							semantic_error("Symbol " + $2->GetSymbol() + " already defined in current scope");
+							YYERROR;
+						}
+						else
+						{
+							$$ = symbolTableRoot->Insert($2->GetSymbol());
+							$$->SetIsDeclared();
+							$$->SetTypeRef($1->GetSymbol(), $1->GetSymbol(), $1->GetRef());
+							symbolTableRoot->IncreaseScope();
+						}
+					}
 paramsspec:     
             paramsspec',' paramspec 
                                 {
@@ -221,7 +279,14 @@ stmt:       IF '(' expr ')' stmt
 									$$ = new cScanNode($3);
 								}
         |   lval '=' expr ';'   {
+		
 									$$ = new cAssignmentNode((cVarRef*)$1, $3);
+									if($$->GetSemanticError())
+									{
+										$$ = NULL;
+										semantic_error("Cannot assign " + $3->GetBaseType() + " to " + $1->GetBaseType());
+									}
+									
 								}
         |   func_call ';'       {
 									$$ = $1;
@@ -245,10 +310,20 @@ varref:   varref '.' varpart    {
 									    $1 = new cVarRef();
 									$$ = $1;
 									$$->Add($3);
+									if($$->GetSemanticError())
+									{
+										semantic_error($$->GetError());
+										YYERROR;
+									}
 								}
         | varpart               {
 									$$ = new cVarRef();
 									$$->Add($1);
+									if($$->GetSemanticError())
+									{
+										semantic_error($$->GetError());
+										YYERROR;
+									}
 								}
 
 varpart:  IDENTIFIER arrayval   {
@@ -327,10 +402,18 @@ fact:        '(' expr ')'       {
 
 %%
 
-int yyerror(const char *msg)
+int yyerror(string msg)
 {
     std::cerr << "ERROR: " << msg << " at symbol "
         << yytext << " on line " << yylineno << "\n";
 
     return 0;
+}
+
+void semantic_error(string msg)
+{
+    std::cout << "ERROR: " << msg << 
+                 " on line " << yylineno << std::endl;
+
+    yynerrs++;
 }

@@ -19,5 +19,8 @@ cParamSpec::cParamSpec(cVarNode* node)
 ************************************************************************/
 string cParamSpec::toString()
 {
-	return mParams->toString();
+	if(mParams != NULL)
+		return mParams->toString();
+	
+	return "";
 }

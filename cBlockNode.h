@@ -25,11 +25,11 @@
 class cBlockNode : public cStmtNode
 {
 public:
-	cBlockNode(cSymbolTable* symbolTable, cDeclsNode* decls = NULL, cStmtsNode* stmts = NULL);
+	cBlockNode(map<string,cSymbol*>* symbolTable = NULL, cDeclsNode* decls = NULL, cStmtsNode* stmts = NULL);
 	string toString();
 	
-protected:
-	cSymbolTable* mSymbolTable;
+private:
+	map<string,cSymbol*>* mSymbolTable;
 	cDeclsNode* mDecls;
 	cStmtsNode* mStmts;
 };

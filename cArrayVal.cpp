@@ -25,7 +25,7 @@ string cArrayVal::toString()
 		retValue += ' ' + i->toString();
 	}
 	
-	retValue += ")\n";
+	retValue += ")";
 	
 	return retValue;
 }

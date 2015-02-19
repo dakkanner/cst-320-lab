@@ -18,6 +18,9 @@ cParamsSpec::cParamsSpec()
 ************************************************************************/
 string cParamsSpec::toString()
 {
+	if(mParams.size() == 0)
+		return "";
+	
 	string retValue("(PARAMS:");
 	
 	for(cParamSpec* i : mParams)
@@ -37,5 +40,6 @@ string cParamsSpec::toString()
 ************************************************************************/
 void cParamsSpec::Add(cParamSpec* newNode)
 {
-	mParams.push_back(newNode);
+	if(newNode != NULL)
+		mParams.push_back(newNode);
 }

@@ -20,10 +20,10 @@
 class cWhileNode : public cStmtNode
 {
 public:
-	cWhileNode(cExprNode* expr, cStmtNode* stmt);
-	string toString();
+	cWhileNode(cExprNode* expr = NULL, cStmtNode* stmt = NULL);
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 	cStmtNode* mStmt;
 };

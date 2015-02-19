@@ -19,5 +19,31 @@ cFuncCall::cFuncCall(cSymbol* id, cParamsNode* params)
 ************************************************************************/
 string cFuncCall::toString()
 {
-	return "(FUNC CALL: " + mID->toString() + mParams->toString() + ")\n";
+	string retValue("(FUNC CALL: ");
+	
+	if(mID != NULL)
+		retValue += mID->toString();
+	
+	if(mParams != NULL)
+		retValue += mParams->toString();
+	
+	return retValue + ")\n";
+}
+
+/************************************************************************
+* virtual string GetType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cFuncCall::GetType()
+{
+	return mID->GetType();
+}
+
+/************************************************************************
+* virtual string GetBaseType();
+*		Virtual function to get the base type of the node
+************************************************************************/
+string cFuncCall::GetBaseType()
+{
+	return GetType();
 }

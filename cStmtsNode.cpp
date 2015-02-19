@@ -36,5 +36,6 @@ string cStmtsNode::toString()
 ************************************************************************/
 void cStmtsNode::Add(cStmtNode* newNode)
 {
-	mStmts.push_back(newNode);
+	if(newNode != NULL)
+		mStmts.push_back(newNode);
 }

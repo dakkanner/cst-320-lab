@@ -20,9 +20,9 @@ class cParamNode
 {
 public:
 	cParamNode(cExprNode* expr);
-	string toString();
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 };
 #endif

@@ -20,10 +20,10 @@
 class cReturnNode : public cStmtNode
 {
 public:
-	cReturnNode(cExprNode* expr);
-	string toString();
+	cReturnNode(cExprNode* expr = NULL);
+	virtual string toString();
 
-protected:
+private:
 	cExprNode* mExpr;
 };
 #endif

@@ -26,10 +26,9 @@ OBJS=main.o \
 	 cParamSpec.o \
 	 cParamsNode.o \
 	 cParamsSpec.o \
-	 cFuncPrefix.o \
-	 cFuncHeader.o \
 	 cFuncDecl.o \
-	 cFuncCall.o
+	 cFuncCall.o \
+	 cArrayDecl.o
 
 all: lang
 

@@ -17,17 +17,14 @@ using std::string;
 *
 * string toString();
 *		Converts the data to a string.
-*
-* void Add(cVarNode* newNode);
-*		Adds a new param to the list.
 ************************************************************************/
 class cParamSpec
 {
 public:
-	cParamSpec(cVarNode* node);
-	string toString();
+	cParamSpec(cVarNode* node = NULL);
+	virtual string toString();
 
-protected:
+private:
 	cVarNode* mParams;
 };
 #endif

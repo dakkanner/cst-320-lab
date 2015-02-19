@@ -10,7 +10,6 @@
 
 #include "cSymbol.h"
 #include "cDeclNode.h"
-#include "cArraySpec.h"
 
 /************************************************************************
 * cVarNode(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
@@ -18,16 +17,19 @@
 *
 * string toString();
 *		Converts the data to a string.
+*
+* cSymbol* GetSymbol()
+*		Returns the ID
 ************************************************************************/
 class cVarNode : public cDeclNode
 {
 public:
-	cVarNode(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
-	string toString();
+	cVarNode(cSymbol* typeID, cSymbol* id);
+	virtual string toString();
+	cSymbol* GetSymbol();
 
-protected:
+private:
 	cSymbol* mTypeID;
 	cSymbol* mID;
-	cArraySpec* mArrSpec;
 };
 #endif

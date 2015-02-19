@@ -1,33 +1,32 @@
 /***********************************************************
 * Author:				Dakota Kanner
-* Filename:				cAssignmentNode.h
+* Filename:				cArrayDecl.h
 ************************************************************/
 
-#ifndef C_ASSIGNMENT_NODE_H
-#define C_ASSIGNMENT_NODE_H
+#ifndef C_ARRAY_DECL_H
+#define C_ARRAY_DECL_H
 
 #pragma once
-#include "cStmtNode.h"
-#include "cVarRef.h"
-#include "cExprNode.h"
+#include "cSymbol.h"
+#include "cDeclNode.h"
+#include "cArraySpec.h"
 
 /************************************************************************
-* cAssignmentNode(cVarRef* lhs, cExprNode* rhs);
-*		C'tor (default)
+* cArrayDecl(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
+*		C'tor (with params)
 *
 * string toString();
 *		Converts the data to a string.
 ************************************************************************/
-class cAssignmentNode : public cStmtNode
+class cArrayDecl : public cDeclNode
 {
 public:
-	cAssignmentNode(cVarRef* lhs, cExprNode* rhs);
+	cArrayDecl(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
 	virtual string toString();
-	bool CanAssign();
-	bool CharInRange(cExprNode* node = NULL);
 
 private:
-	cVarRef* mLHS;
-	cExprNode* mRHS;
+	cSymbol* mTypeID;
+	cSymbol* mID;
+	cArraySpec* mArrSpec;
 };
 #endif

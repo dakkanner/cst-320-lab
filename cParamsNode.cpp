@@ -18,6 +18,9 @@ cParamsNode::cParamsNode()
 ************************************************************************/
 string cParamsNode::toString()
 {
+	if(mParams.size() == 0)
+		return "";
+	
 	string retValue("(PARAM:");
 	
 	for(cParamNode* i : mParams)
@@ -37,5 +40,6 @@ string cParamsNode::toString()
 ************************************************************************/
 void cParamsNode::Add(cParamNode* newNode)
 {
-	mParams.push_back(newNode);
+	if(newNode != NULL)
+		mParams.push_back(newNode);
 }

@@ -9,11 +9,8 @@
 #include <iostream>
 #include <fstream>
 
-//#include "cSymbolTable.h"
+//lex.h contains all the local .h refs
 #include "lex.h"
-//#include "cAstNode.h"
-//#include "cProgramNode.h"
-//#include "langparse.h"
 
 extern cAstNode *yyast_root;
 cSymbolTable * symbolTableRoot;
@@ -60,7 +57,7 @@ int main(int argc, char **argv)
         {
             output << yyast_root->toString() << std::endl;
         } else {
-            output << "Errors in compile\n";
+            output << std::to_string(yynerrs) << " Errors in compile\n";
             return result;
         }
     }

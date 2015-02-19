@@ -9,8 +9,8 @@
 * cVarNode(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
 *		C'tor (with params)
 ************************************************************************/
-cVarNode::cVarNode(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec)
-	:mTypeID(typeID), mID(id), mArrSpec(arrSpec)
+cVarNode::cVarNode(cSymbol* typeID, cSymbol* id)
+	:mTypeID(typeID), mID(id)
 { }
 
 /************************************************************************
@@ -21,12 +21,23 @@ string cVarNode::toString()
 {
 	string retValue("VAR: ");
 	
-	retValue += mTypeID->toString() + ' ' + mID->toString();
-	
-	if(mArrSpec != NULL)
+	if(mTypeID != NULL)
 	{
-		retValue += ' ' + mArrSpec->toString();
+		retValue += mTypeID->toString();
+	}
+	if(mID != NULL)
+	{
+		retValue += ' ' + mID->toString();
 	}
 	
 	return retValue;
+}
+
+/************************************************************************
+* cSymbol* GetSymbol()
+*		Returns the ID
+************************************************************************/
+cSymbol* cVarNode::GetSymbol()
+{
+	return mID;
 }

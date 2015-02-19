@@ -15,9 +15,18 @@ cSymbolTable::cSymbolTable()
 	// Push inital map
 	symbolDeque.push_back(new map<string, cSymbol*>());
 	
-	Insert("char", true);
-	Insert("int", true);
-	Insert("float", true);
+	//Add char, int, and float manually
+	cSymbol* charType = new cSymbol("char", true);
+	charType->SetTypeRef("char", "char", nullptr);
+	symbolDeque.back()->insert(pair<string,cSymbol*>("char",charType));
+	
+	cSymbol* intType = new cSymbol("int", true);
+	intType->SetTypeRef("int", "int", nullptr);
+	symbolDeque.back()->insert(pair<string,cSymbol*>("int",intType));
+	
+	cSymbol* floatType = new cSymbol("float", true);
+	floatType->SetTypeRef("float", "float", nullptr);
+	symbolDeque.back()->insert(pair<string,cSymbol*>("float",floatType));
 }
 
 /************************************************************************
@@ -34,23 +43,14 @@ cSymbolTable* cSymbolTable::GetInstance()
 }
 
 /************************************************************************
-* ~cSymbolTable();
-*		D'tor, deletes allocated memory
-************************************************************************/
-//cSymbolTable::~cSymbolTable()
-//{
-//	symbolDeque->clear();
-//	delete symbolDeque;
-//}
-
-/************************************************************************
 * IncreaseScope();
 *		Adds a new layer to the top of the deque
 ************************************************************************/
 map<string,cSymbol*>* cSymbolTable::IncreaseScope()
 {
-	symbolDeque.push_back(new map<string, cSymbol*>());
-	return symbolDeque.back();
+	map<string,cSymbol*>* newLayer = new map<string,cSymbol*>();
+	symbolDeque.push_back(newLayer);
+	return newLayer;
 }
 
 /************************************************************************
@@ -68,7 +68,7 @@ void cSymbolTable::DecreaseScope()
 ************************************************************************/
 cSymbol* cSymbolTable::Insert(string symb, bool type) 
 {
-    cSymbol * retVal = nullptr;
+    cSymbol * retVal = NULL;
 
     map<string,cSymbol*>::iterator iter = symbolDeque.back()->find(symb);
     if (iter == symbolDeque.back()->end())
@@ -82,6 +82,21 @@ cSymbol* cSymbolTable::Insert(string symb, bool type)
     }
     return retVal;
 }
+/************************************************************************
+* bool Remove(cSymbol* symbol);
+*		Removes a symbol from the table
+************************************************************************/
+bool cSymbolTable::Remove(cSymbol* symb)
+{
+	if(symb != NULL)
+	{
+		symbolDeque.back()->erase(symb->GetSymbol());
+		symb->DecrementSymbolCount();
+		return true;
+	}
+	
+	return false;
+}
 
 /************************************************************************
 * cSymbol LookUpLocal(string name);
@@ -89,7 +104,7 @@ cSymbol* cSymbolTable::Insert(string symb, bool type)
 ************************************************************************/
 cSymbol* cSymbolTable::LookUpLocal(string name)
 {
-	cSymbol * retVal = nullptr;
+	cSymbol * retVal = NULL;
 
 	// Can't find nothing
 	if ( name.empty() )
@@ -103,6 +118,10 @@ cSymbol* cSymbolTable::LookUpLocal(string name)
 	{
 		retVal = symb->second;
 	}
+	else
+	{
+		retVal = NULL;
+	}
 	// Else return empty cSymbol
 	return retVal;
 }
@@ -113,7 +132,7 @@ cSymbol* cSymbolTable::LookUpLocal(string name)
 ************************************************************************/
 cSymbol* cSymbolTable::LookUp(string name)
 {
-	cSymbol * retVal = nullptr;
+	cSymbol * retVal = NULL;
 
 	// Can't find nothing
 	if (name.empty())
