@@ -23,19 +23,14 @@ using namespace std;
 * 		Returns the instance of the symbol table
 * 
 * cSymbolTable();
-*		C'tor (default), creates a new map
-*
-* ~cSymbolTable();
-*		D'tor, deletes allocated memory
+*		C'tor (default), creates an initial map. Private.
 *
 * bool Insert(string name, cSymbol symb);
 *		Insert a new symbol into the table
 *
 * bool Remove(cSymbol* symbol);
-*		Removes a symbol from the table
-*
-* bool Find(string name);
-*		Returns true if the passed-in name exists
+*		Removes a symbol from the table. Should not be needed unless a 
+* 		d'tor is implemented in the language. 
 *
 * cSymbol LookUpLocal(string name);
 *		Returns the entry that matches the passed-in name for the top level

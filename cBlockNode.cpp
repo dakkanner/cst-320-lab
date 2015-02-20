@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cBlockNode(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cStmtsNode* stmts);
-*		C'tor
+*		C'tor (with params)
 ************************************************************************/
 cBlockNode::cBlockNode(map<string,cSymbol*>* symbolTable, cDeclsNode* decls, cStmtsNode* stmts)
 	:mSymbolTable(symbolTable), mDecls(decls), mStmts(stmts)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cBlockNode::toString()

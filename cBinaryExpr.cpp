@@ -14,7 +14,7 @@ cBinaryExpr::cBinaryExpr(cExprNode* lhs, char oper, cExprNode* rhs)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cBinaryExpr::toString()

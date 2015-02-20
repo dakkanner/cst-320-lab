@@ -8,7 +8,7 @@ cSymbolTable* cSymbolTable::mSymbols = NULL;
 
 /************************************************************************
 * cSymbolTable();
-*		C'tor (default), creates a new map
+*		C'tor (default), creates an initial map. Private.
 ************************************************************************/
 cSymbolTable::cSymbolTable()
 {
@@ -84,7 +84,8 @@ cSymbol* cSymbolTable::Insert(string symb, bool type)
 }
 /************************************************************************
 * bool Remove(cSymbol* symbol);
-*		Removes a symbol from the table
+*		Removes a symbol from the table. Should not be needed unless a 
+* 		d'tor is implemented in the language. 
 ************************************************************************/
 bool cSymbolTable::Remove(cSymbol* symb)
 {

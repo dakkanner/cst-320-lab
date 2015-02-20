@@ -16,7 +16,7 @@ using namespace std;
 * cArrayVal();
 *		C'tor (default)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * void Add(ExprNode* newNode);

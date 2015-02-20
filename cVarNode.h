@@ -15,11 +15,11 @@
 * cVarNode(cSymbol* typeID, cSymbol* id, cArraySpec* arrSpec);
 *		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * cSymbol* GetSymbol()
-*		Returns the ID
+*		Returns the ID cSymbol
 ************************************************************************/
 class cVarNode : public cDeclNode
 {

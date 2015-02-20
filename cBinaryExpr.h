@@ -14,7 +14,13 @@
 * cBinaryExpr(cExprNode* lhs, char oper, cExprNode* rhs);
 *		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
+*		Converts the data to a string.
+*
+* virtual string GetType();
+*		Returns the highest level 
+*
+* virtual string GetBaseType();
 *		Converts the data to a string.
 ************************************************************************/
 class cBinaryExpr : public cExprNode

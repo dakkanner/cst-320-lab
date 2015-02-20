@@ -14,7 +14,7 @@ cWhileNode::cWhileNode(cExprNode* expr, cStmtNode* stmt)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cWhileNode::toString()

@@ -16,7 +16,7 @@ using std::list;
 * cParamsSpec();
 *		C'tor (default)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * void Add(cParamNode* newNode);

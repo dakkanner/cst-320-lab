@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cParamNode(cExprNode* expr);
-*		C'tor (default)
+*		C'tor (with param)
 ************************************************************************/
 cParamNode::cParamNode(cExprNode* expr)
 	:mExpr(expr)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cParamNode::toString()

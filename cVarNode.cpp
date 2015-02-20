@@ -14,7 +14,7 @@ cVarNode::cVarNode(cSymbol* typeID, cSymbol* id)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cVarNode::toString()
@@ -35,7 +35,7 @@ string cVarNode::toString()
 
 /************************************************************************
 * cSymbol* GetSymbol()
-*		Returns the ID
+*		Returns the ID cSymbol
 ************************************************************************/
 cSymbol* cVarNode::GetSymbol()
 {

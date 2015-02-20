@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cFuncCall(cSymbol* id, cParamsNode* params);
-*		C'tor (default)
+*		C'tor (with params)
 ************************************************************************/
 cFuncCall::cFuncCall(cSymbol* id, cParamsNode* params)
 	:mID(id), mParams(params)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cFuncCall::toString()

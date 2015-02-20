@@ -13,7 +13,7 @@ cArraySpec::cArraySpec()
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cArraySpec::toString()

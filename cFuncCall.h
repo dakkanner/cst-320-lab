@@ -14,9 +14,9 @@
 
 /************************************************************************
 * cFuncCall(cSymbol* id, cParamsNode* params);
-*		C'tor (withy params)
+*		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * virtual string GetType();

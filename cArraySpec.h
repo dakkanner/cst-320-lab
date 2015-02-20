@@ -15,7 +15,7 @@ using namespace std;
 * cArraySpec();
 *		C'tor (default)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * void Add(int newVal);

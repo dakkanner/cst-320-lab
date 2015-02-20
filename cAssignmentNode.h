@@ -13,10 +13,13 @@
 
 /************************************************************************
 * cAssignmentNode(cVarRef* lhs, cExprNode* rhs);
-*		C'tor (default)
+*		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
+*
+* bool CanAssign();
+*		Checks that the data can be assigned to the left hand side
 ************************************************************************/
 class cAssignmentNode : public cStmtNode
 {
@@ -24,7 +27,6 @@ public:
 	cAssignmentNode(cVarRef* lhs, cExprNode* rhs);
 	virtual string toString();
 	bool CanAssign();
-	bool CharInRange(cExprNode* node = NULL);
 
 private:
 	cVarRef* mLHS;

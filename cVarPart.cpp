@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cVarPart();
-*		C'tor (default)
+*		C'tor (with params)
 ************************************************************************/
 cVarPart::cVarPart(cSymbol* id, cArrayVal* arr)
 	:mID(id), mArr(arr)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cVarPart::toString()
@@ -31,7 +31,7 @@ string cVarPart::toString()
 
 /************************************************************************
 * virtual string GetType();
-*		Virtual function to get the base type of the node
+*		Function to get the type of the node
 ************************************************************************/
 string cVarPart::GetType()
 {
@@ -40,7 +40,7 @@ string cVarPart::GetType()
 
 /************************************************************************
 * virtual string GetBaseType();
-*		Virtual function to get the base type of the node
+*		Function to get the base type of the node's parent
 ************************************************************************/
 string cVarPart::GetBaseType()
 {
@@ -51,8 +51,8 @@ string cVarPart::GetBaseType()
 }
 
 /************************************************************************
-* cSymbol* cVarPart::GetId()
-*		Virtual function to get the base type of the node
+* cSymbol* GetId();
+*		Returns the identifying symbol for the varpart
 ************************************************************************/
 cSymbol* cVarPart::GetId()
 {
@@ -61,7 +61,7 @@ cSymbol* cVarPart::GetId()
 
 /************************************************************************
 * void SetId(cSymbol* id);
-*		Virtual function to get the base type of the node
+*		Sets the identifying symbol for the varpart
 ************************************************************************/
 void cVarPart::SetId(cSymbol* id)
 {
@@ -70,7 +70,7 @@ void cVarPart::SetId(cSymbol* id)
 
 /************************************************************************
 * cDeclNode* GetTypeRef();
-*		Virtual function to get the base type of the node
+*		Returns the decl_node for the symbol
 ************************************************************************/
 cDeclNode* cVarPart::GetTypeRef()
 {
@@ -79,7 +79,7 @@ cDeclNode* cVarPart::GetTypeRef()
 
 /************************************************************************
 * string GetSymbol();
-*		Virtual function to get the base type of the node
+*		Returns the type of the identifying symbol
 ************************************************************************/
 string cVarPart::GetSymbol()
 {

@@ -66,26 +66,31 @@ void cVarRef::Add(cVarPart* part)
 	}
 }
 
-string cVarRef::GetSymbol()
-{
-	return mVarParts.back()->GetSymbol();
-}
-
+/************************************************************************
+* virtual string GetBaseType();
+*		Function to get the base type of the node's parent
+* virtual string GetType();
+*		Function to get the type of the node
+* cDeclNode* GetTypeRef();
+*		Returns the decl_node for the symbol
+************************************************************************/
 string cVarRef::GetBaseType()
 {
 	return (*mVarParts.rbegin())->GetBaseType();
 }
-
 string cVarRef::GetType()
 {
 	return (*mVarParts.rbegin())->GetType();
 }
-
 cDeclNode* cVarRef::GetTypeRef()
 {
 	return mVarParts.back()->GetTypeRef();
 }
 
+/************************************************************************
+* string VRef();
+*		Returns the string of each varpart in the format va1.var2.var3...
+************************************************************************/
 string cVarRef::VRef()
 {
 	string retString("");
@@ -104,6 +109,10 @@ string cVarRef::VRef()
 	return retString;
 }
 
+/************************************************************************
+* bool IsSymbolInParent(cVarPart* part);
+*		Returns true if the variable is found in the struct
+************************************************************************/
 bool cVarRef::IsSymbolInParent(cVarPart* part)
 {
 	cSymbol* symb = NULL;
@@ -111,12 +120,7 @@ bool cVarRef::IsSymbolInParent(cVarPart* part)
 	cVarPart* varPt = mVarParts.back();
 	
 	//See if the parent can be a struct decl
-	try
-	{
-		structDcl = static_cast<cStructDecl*>(varPt->GetTypeRef());
-	}
-	catch (...)
-	{ }
+	structDcl = static_cast<cStructDecl*>(varPt->GetTypeRef());
 	
 	//Find the symbol or throw the error
 	if(structDcl != NULL)
@@ -132,7 +136,7 @@ bool cVarRef::IsSymbolInParent(cVarPart* part)
 	//Set the passed-in symbol to the found one or throw the error
 	if(symb != NULL)
 	{
-		symbolTableRoot->Remove(part->GetId());
+		//symbolTableRoot->Remove(part->GetId());
 		part->SetId(symb);
 	}
 	else
@@ -144,7 +148,20 @@ bool cVarRef::IsSymbolInParent(cVarPart* part)
 	return false;
 }
 
+/************************************************************************
+* string GetError();
+*		Returns the error string
+************************************************************************/
 string cVarRef::GetError()
 {
 	return mError;
+}
+
+/************************************************************************
+* string GetSymbol();
+*		Returns the cSymbol
+************************************************************************/
+string cVarRef::GetSymbol()
+{
+	return mVarParts.back()->GetSymbol();
 }

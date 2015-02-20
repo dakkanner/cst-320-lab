@@ -11,9 +11,9 @@
 
 /************************************************************************
 * cParamNode(cExprNode* expr);
-*		C'tor (default)
+*		C'tor (with param)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 class cParamNode

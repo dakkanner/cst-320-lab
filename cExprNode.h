@@ -14,20 +14,19 @@ using std::string;
 #include "cDeclNode.h"
 
 /************************************************************************
-* virtual string toString() = 0;
-*		Pure virtual function to convert data to a string
-*
 * virtual string GetType() = 0;
 *		Pure virtual function to get the type of the node
 *
 * virtual string GetBaseType() = 0;
 *		Pure virtual function to get the base type of the node
 *
+* virtual cDeclNode* GetTypeRef()
+*		Returns the base type of the reference 
+*
 ************************************************************************/
 class cExprNode : public cAstNode
 {
 public:
-	//virtual string toString() = 0;
 	virtual string GetType() = 0;
 	virtual string GetBaseType() = 0;
 	virtual cDeclNode* GetTypeRef()

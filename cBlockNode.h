@@ -16,17 +16,17 @@
 
 /************************************************************************
 * cBlockNode(cSymbolTable* symbolTable, cDeclsNode* decls = NULL, cStmtsNode* stmts = NULL);
-*		C'tor
+*		C'tor (with params)
 *
-* string toString();
-*		Function to convert data to a string
+* virtual string toString();
+*		Converts the data to a string.
 *
 ************************************************************************/
 class cBlockNode : public cStmtNode
 {
 public:
 	cBlockNode(map<string,cSymbol*>* symbolTable = NULL, cDeclsNode* decls = NULL, cStmtsNode* stmts = NULL);
-	string toString();
+	virtual string toString();
 	
 private:
 	map<string,cSymbol*>* mSymbolTable;

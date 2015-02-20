@@ -15,11 +15,8 @@
 * cPrintNode();
 *		C'tor (default)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
-*
-* void Add(cPrintNode* newNode);
-*		Adds a new Stmt to the list.
 ************************************************************************/
 class cPrintNode : public cStmtNode
 {

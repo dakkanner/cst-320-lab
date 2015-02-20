@@ -15,16 +15,28 @@ using std::cout;
 
 /************************************************************************
 * cVarPart();
-*		C'tor (default)
+*		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 *
 * virtual string GetType();
-*		Virtual function to get the type of the node
+*		Function to get the type of the node
 *
 * virtual string GetBaseType();
-*		Virtual function to get the base type of the node
+*		Function to get the base type of the node's parent
+*
+* cDeclNode* GetTypeRef();
+*		Returns the decl_node for the symbol
+*
+* cSymbol* GetId();
+*		Returns the identifying symbol for the varpart
+*
+* void SetId(cSymbol* id);
+*		Sets the identifying symbol for the varpart
+*
+* string GetSymbol();
+*		Returns the type of the identifying symbol
 ************************************************************************/
 class cVarPart : public cExprNode
 {
@@ -33,9 +45,9 @@ public:
 	virtual string toString();
 	virtual string GetType();
 	virtual string GetBaseType();
+	cDeclNode* GetTypeRef();
 	cSymbol* GetId();
 	void SetId(cSymbol* id);
-	cDeclNode* GetTypeRef();
 	string GetSymbol();
 	
 private:

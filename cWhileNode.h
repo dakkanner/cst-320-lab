@@ -12,9 +12,9 @@
 
 /************************************************************************
 * cWhileNode(cExprNode* expr, cStmtNode* stmt);
-*		C'tor (default)
+*		C'tor (with params)
 *
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 class cWhileNode : public cStmtNode

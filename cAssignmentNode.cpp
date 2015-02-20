@@ -7,7 +7,7 @@
 
 /************************************************************************
 * cAssignmentNode(cVarRef* lhs, cExprNode* rhs);
-*		C'tor (default)
+*		C'tor (with params)
 ************************************************************************/
 cAssignmentNode::cAssignmentNode(cVarRef* lhs, cExprNode* rhs)
 	:mLHS(lhs), mRHS(rhs)
@@ -17,7 +17,7 @@ cAssignmentNode::cAssignmentNode(cVarRef* lhs, cExprNode* rhs)
 }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cAssignmentNode::toString()

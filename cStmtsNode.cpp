@@ -13,7 +13,7 @@ cStmtsNode::cStmtsNode()
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cStmtsNode::toString()

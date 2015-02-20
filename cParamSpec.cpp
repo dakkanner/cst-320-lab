@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cParamSpec();
-*		C'tor (default)
+*		C'tor (with param)
 ************************************************************************/
 cParamSpec::cParamSpec(cVarNode* node)
 	:mParams(node)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cParamSpec::toString()

@@ -7,14 +7,14 @@
 
 /************************************************************************
 * cFuncDecl(cSymbol* header, cParamsSpec* params; = NULL);
-*		C'tor (withy params)
+*		C'tor (with params)
 ************************************************************************/
 cFuncDecl::cFuncDecl(cSymbol* header, cParamsSpec* params)
 	:mHeader(header), mParams(params), mDecls(NULL), mStmts(NULL)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cFuncDecl::toString()

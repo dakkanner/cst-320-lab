@@ -14,7 +14,7 @@ cPrintNode::cPrintNode(cExprNode* expr)
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cPrintNode::toString()

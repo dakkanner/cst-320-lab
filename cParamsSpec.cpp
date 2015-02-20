@@ -13,7 +13,7 @@ cParamsSpec::cParamsSpec()
 { }
 
 /************************************************************************
-* string toString();
+* virtual string toString();
 *		Converts the data to a string.
 ************************************************************************/
 string cParamsSpec::toString()
@@ -32,7 +32,6 @@ string cParamsSpec::toString()
 	
 	return retValue;
 }
-
 
 /************************************************************************
 * void Add(cParamSpec* newNode);
