@@ -24,7 +24,7 @@ string cVarRef::toString()
 	//For each VarPart
 	for(cVarPart* i : mVarParts)
 	{
-		retValue += "(VarRef: " + i->toString() + " ";
+		retValue += "(VarRef: " + i->toString();
 		
 		//if(i != mVarParts.front())
         //    retValue += ')';
@@ -74,24 +74,11 @@ string cVarRef::GetSymbol()
 string cVarRef::GetBaseType()
 {
 	return (*mVarParts.rbegin())->GetBaseType();
-	
-	
-	
-	//return mVarParts.back()->GetBaseType();
 }
 
 string cVarRef::GetType()
 {
 	return (*mVarParts.rbegin())->GetType();
-	
-	
-	
-	
-	
-	
-	
-	
-	//return mVarParts.back()->GetType();
 }
 
 cDeclNode* cVarRef::GetTypeRef()

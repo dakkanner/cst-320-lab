@@ -83,12 +83,13 @@
 
 %%
 
-program: block                  { $$ = $1;
-                                  yyast_root = $$;
-                                  if (yynerrs == 0) 
-                                      YYACCEPT;
-                                  else
-                                      YYABORT;
+program: block                  { 
+									$$ = $1;
+									yyast_root = $$;
+									if (yynerrs == 0) 
+										YYACCEPT;
+									else
+										YYABORT;
                                 }
 block:  open decls stmts close  {
 									$$ = new cBlockNode($1, $2, $3);

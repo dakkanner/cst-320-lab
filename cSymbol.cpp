@@ -12,7 +12,9 @@ int cSymbol::symbolCount = 0;
 ************************************************************************/
 cSymbol::cSymbol(string value, bool isType)
 	:mValue(value), mSequence(++symbolCount), mIsType(isType), mIsDeclared(false), mTypeRef(""), mBaseType(""), mDecl(NULL)
-{ }
+{ 
+	//cout << "------- Value: " << value << ". Count:" << symbolCount << ". IsType:" << isType << ".\n";
+}
 /************************************************************************
 * string GetSymbol();
 * 		Getter for the symbol name

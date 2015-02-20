@@ -7,6 +7,7 @@
 #define C_SYMBOL_H
 
 #pragma once
+#include <iostream>
 #include <string>
 using namespace std;
 #include "cAstNode.h"

@@ -50,14 +50,14 @@ junk			.
 				}
 {ident}         {  
 					yylval.symbol = symbolTableRoot->LookUp(yytext);
-					if(yylval.symbol != nullptr)
+					if(yylval.symbol != NULL)
 					{
 						if(yylval.symbol->GetIsType())
 							RETURN(TYPE_ID);
 					}
 					else
 					{
-						yylval.symbol = new cSymbol(yytext);
+						yylval.symbol = symbolTableRoot->Insert(yytext);
 					}
 					//return yytext[0];
                     return (IDENTIFIER);
