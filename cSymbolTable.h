@@ -60,4 +60,5 @@ private:
 	static cSymbolTable* mSymbols;
 };
 
+
 #endif
