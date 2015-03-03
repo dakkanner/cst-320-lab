@@ -1,29 +1,35 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cReturnNode.h
-************************************************************/
-
-#ifndef C_RETURN_NODE_H
-#define C_RETURN_NODE_H
-
 #pragma once
+//*******************************************************
+// Purpose: Class for a return statement
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
+#include <string>
+
 #include "cStmtNode.h"
 #include "cExprNode.h"
 
-/************************************************************************
-* cReturnNode(cExprNode* expr);
-*		C'tor (with param)
-*
-* virtual string toString();
-*		Converts the data to a string.
-************************************************************************/
 class cReturnNode : public cStmtNode
 {
-public:
-	cReturnNode(cExprNode* expr = NULL);
-	virtual string toString();
+  public:
+    cReturnNode(cExprNode *expr) : cStmtNode()
+    {
+        mExpr = expr;
+    }
 
-private:
-	cExprNode* mExpr;
+    virtual std::string toString()
+    {
+        std::string result("RETURN: ");
+        result += mExpr->toString();
+        return result;
+    }
+
+  protected:
+    cExprNode *mExpr;       // value to be returned
 };
-#endif
+

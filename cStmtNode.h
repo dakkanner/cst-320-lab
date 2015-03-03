@@ -1,28 +1,22 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cStmtNode.h
-************************************************************/
-
-#ifndef C_STMT_NODE_H
-#define C_STMT_NODE_H
-
 #pragma once
+//*******************************************************
+// Purpose: Base class for all statements
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
 
 #include <string>
 
 #include "cAstNode.h"
 
-using std::string;
-
-/************************************************************************
-*
-* virtual string toString() = 0;
-*		Pure virtual function to convert data to a string
-*
-************************************************************************/
 class cStmtNode : public cAstNode
 {
-public:
-	virtual string toString() = 0;
+  public:
+    cStmtNode() : cAstNode()
+    {}
 };
-#endif
+

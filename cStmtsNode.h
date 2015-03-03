@@ -1,36 +1,47 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cStmtsNode.h
-************************************************************/
-
-#ifndef C_STMTS_NODE_H
-#define C_STMTS_NODE_H
-
 #pragma once
+//*******************************************************
+// Purpose: Class for a list of statements
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
 
+#include <string>
 #include <list>
 using std::list;
 
-#include "cStmtNode.h"
+#include "cAstNode.h"
+#include "cAstList.h"
 
-/************************************************************************
-* cStmtsNode();
-*		C'tor (default)
-*
-* virtual string toString();
-*		Converts the data to a string.
-*
-* void Add(cStmtsNode* newNode);
-*		Adds a new Stmt to the list.
-************************************************************************/
 class cStmtsNode : public cAstNode
 {
-public:
-	cStmtsNode();
-	virtual string toString();
-	void Add(cStmtNode* newNode = NULL);
+  public:
+    // create the list and insert the first statement
+    cStmtsNode(cStmtNode *stmt) : cAstNode()
+    {
+        mList = new list<cStmtNode *>();
+        mList->push_back(stmt);
+    }
 
-private:
-	list<cStmtNode*> mStmts;
+    // add a statement to the list
+    void AddNode(cStmtNode *stmt) 
+    {
+        mList->push_back(stmt);
+    }
+
+    virtual std::string toString()
+    {
+        std::string result("STMTS:\n{\n");
+        result += ListToString(mList, true);
+        result += "}\n";
+
+        return result;
+    }
+
+  protected:
+    list<cStmtNode *> *mList;   // list of statements
 };
-#endif
+

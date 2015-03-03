@@ -1,78 +1,55 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cSymbol.h
-************************************************************/ 
-
-#ifndef C_SYMBOL_H
-#define C_SYMBOL_H
-
 #pragma once
-#include <iostream>
+//*******************************************************
+// Purpose: a symbol e.g. variable, type, etc.
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
 #include <string>
-using namespace std;
 #include "cAstNode.h"
 #include "cDeclNode.h"
 
-/************************************************************************
-* cSymbol(string value, bool isType = false);
-*		C'tor (with params)
-*
-* string cSymbol::toString();
-* 		Prints the value and sequence number of the symbol
-*
-* string GetSymbol();
-* 		Getter for the symbol name
-* void SetSymbol(string value);
-*		Setter for the symbol name
-*
-* void SetTypeRef(string typeRef, string baseType, cDeclNode* decl = NULL);
-* 		Sets the type refernece, the base, and the decl_node
-*
-* bool GetIsType();
-*		Returns whether it is a type
-* void SetIsType(bool isType = true);
-*  		Sets whether the symbol is a type
-* string GetType()
-* 		Returns the type
-* string GetBaseType()
-* 		Returns the type of the bas
-* bool GetIsDeclared();
-*		Gets whether the symbol has been declared
-* void SetIsDeclared(bool isDeclared = true);
-* 		Sets whether the symbol has been declared
-* cDeclNode* GetRef();
-*		Returns the decl_node for the symbol
-* void DecrementSymbolCount();
-* 		Reduces the count of total symbols
-************************************************************************/
 class cSymbol
 {
-public:
-	cSymbol(string value, bool isType = false);
-	
-	virtual string toString();
-	virtual string GetType();
-	virtual string GetBaseType();
-	
-	string GetSymbol();
-	void SetSymbol(string value);
-	void SetTypeRef(string typeRef, string baseType, cDeclNode* decl = NULL);
-	bool GetIsType();
-	void SetIsType(bool isType = true);
-	bool GetIsDeclared();
-	void SetIsDeclared(bool isDeclared = true);
-	cDeclNode* GetRef();
-	void DecrementSymbolCount();
+    public:
+        // create a Symbol for the given name n
+        cSymbol(std::string n) 
+        {
+            name = n; 
+            sequence = ++totalSymbols;
+            mType = NULL;
+        }
 
-private:
-	int mSequence; 	  // Unique integer identifier of symbol
-	string mValue;	  // Value of symbol
-	bool mIsType; 	  // True if this is a type
-	bool mIsDeclared; // True if this is declared
-	string mTypeRef;  // Reference for the type of the symbol
-	string mBaseType;
-	cDeclNode* mDecl;
-	static int symbolCount;
+        // return the name of the symbol
+        std::string Name() {return name;}
+
+        // Indicate what type of thing this symbol is
+        void SetType(cDeclNode *type)
+        { mType = type; }
+
+        // return the declaration of this symbol
+        cDeclNode *GetType()
+        { return mType; }
+
+        // return a string representation of the symbol
+        virtual std::string toString()
+        {
+            std::string result("sym: ");
+            result += name + " ";
+            result += std::to_string(static_cast<long long>(sequence));
+
+            return result;
+        }
+
+    protected:
+        std::string name;           // name of the symbol
+        int sequence;               // unique ID for symbol
+        cDeclNode *mType;           // Declaration of this ID
+        static int totalSymbols;    // STATIC: keeps track of total number of
+                                    // symbols that have been created. Used
+                                    // to assign sequence: unique ID
 };
-
-#endif

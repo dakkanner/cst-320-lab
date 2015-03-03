@@ -1,156 +1,121 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cSymbolTable.cpp
-************************************************************/
+//*******************************************************
+// Purpose: Manage the Symbol Tables
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
+#include <assert.h>
+#include "cSymbol.h"
+#include "cScope.h"
 #include "cSymbolTable.h"
+#include "cBaseDeclNode.h"
 
-cSymbolTable* cSymbolTable::mSymbols = NULL;
+int cSymbol::totalSymbols = 0;              // total symbols created
+cSymbolTable *symbolTableRoot;              // global symbol table
 
-/************************************************************************
-* cSymbolTable();
-*		C'tor (default), creates an initial map. Private.
-************************************************************************/
-cSymbolTable::cSymbolTable()
+//*******************************************
+// Create a new, empty symbol table
+cSymbolTable::cSymbolTable() 
 {
-	// Push inital map
-	symbolDeque.push_back(new map<string, cSymbol*>());
-	
-	//Add char, int, and float manually
-	cSymbol* charType = new cSymbol("char", true);
-	charType->SetTypeRef("char", "char", nullptr);
-	symbolDeque.back()->insert(pair<string,cSymbol*>("char",charType));
-	
-	cSymbol* intType = new cSymbol("int", true);
-	intType->SetTypeRef("int", "int", nullptr);
-	symbolDeque.back()->insert(pair<string,cSymbol*>("int",intType));
-	
-	cSymbol* floatType = new cSymbol("float", true);
-	floatType->SetTypeRef("float", "float", nullptr);
-	symbolDeque.back()->insert(pair<string,cSymbol*>("float",floatType));
+    mScope = new cScope(NULL);
 }
-
-/************************************************************************
-* cSymbolTable* GetInstance();
-*		Returns the instance of the table. Creates it if it didn't 
-* 		exist before
-************************************************************************/
-cSymbolTable* cSymbolTable::GetInstance()
+//*******************************************
+// create and return new symbol.
+// If symbol already exists, return pointer to that symbol instead of creating
+// a new one.
+cSymbol *cSymbolTable::Insert(cSymbol *symbol)
 {
-    if(mSymbols == NULL)
-        mSymbols = new cSymbolTable();
+    // only check if symbol is in local table.
+    // If we are defining a symbol that exists in an outer scope,
+    // we still want to define a symbol in this scope.
+    cSymbol *localSymbol = LocalLookup(symbol->Name());
+
+    // if symbol doesn't already exist, create a new one
+    if (localSymbol == NULL)
+    {
+        cSymbol *globalSymbol = Lookup(symbol->Name());
+
+        // if either the symbol doesn't exist at all or if
+        // we have a different symbol from one with the same name
+        if (globalSymbol == NULL || globalSymbol != symbol)
+        {
+            mScope->Insert(symbol->Name(), symbol);
+        } else {
+            // we need to create a new symbol so that we don't 
+            // have the same actual symbol two places in the symbol table
+            symbol = new cSymbol(symbol->Name());
+            assert(symbol != NULL);
+
+            mScope->Insert(symbol->Name(), symbol);
+        }
+    }
+
+    return symbol;
+}
+//*******************************************
+// Look for a symbol. Return NULL if not found
+cSymbol *cSymbolTable::Lookup(std::string name)
+{
+    cScope *scope = mScope;
+    cSymbol *symbol = NULL;
+    while (symbol == NULL && scope != NULL)
+    {
+        symbol = scope->Lookup(name);
+        scope = scope->Parent();
+    }
+
+    return symbol;
+}
+//*******************************************
+// lookup a symbol in the local ST without looking at parent
+cSymbol *cSymbolTable::LocalLookup(std::string name)
+{
+    return mScope->Lookup(name);
+}
+//*******************************************
+// Increase the scoping level. Save pointer to old (outer) scoping level.
+// Return pointer to new symtab
+cScope *cSymbolTable::IncreaseScope()
+{
+    mScope = new cScope(mScope);
+    return mScope;
+}
+//*******************************************
+// Decrease scoping level.
+// DON'T destroy the current table because the parse tree will have
+// references to the symbols stored here.
+cScope *cSymbolTable::DecreaseScope()
+{
+    // MEMORY LEAK:
+    // we aren't deleteing the current table because parse tree has references
+    // to our symbols
     
-    return mSymbols;
+    mScope = mScope->Parent();
+    return mScope;
 }
-
-/************************************************************************
-* IncreaseScope();
-*		Adds a new layer to the top of the deque
-************************************************************************/
-map<string,cSymbol*>* cSymbolTable::IncreaseScope()
+//*******************************************
+// create default symbol table including definitions for default types
+cSymbolTable *cSymbolTable::CreateDefaultTable()
 {
-	map<string,cSymbol*>* newLayer = new map<string,cSymbol*>();
-	symbolDeque.push_back(newLayer);
-	return newLayer;
+    cSymbolTable *defaultTable = new cSymbolTable();
+    cSymbol *sym;
+
+    sym = new cSymbol("char");
+    defaultTable->Insert(sym);
+    sym->SetType(new cBaseDeclNode(sym, 1, false));
+
+    sym = new cSymbol("int");
+    defaultTable->Insert(sym);
+    sym->SetType(new cBaseDeclNode(sym, 4, false));
+
+    sym = new cSymbol("float");
+    defaultTable->Insert(sym);
+    sym->SetType(new cBaseDeclNode(sym, 8, true));
+
+    return defaultTable;
 }
 
-/************************************************************************
-* DecreaseScope();
-*		If possible, remove a layer from the top of the deque
-************************************************************************/
-void cSymbolTable::DecreaseScope()
-{
-	symbolDeque.pop_back();
-}
-
-/************************************************************************
-* cSymbol* Insert(string symb)
-*		Insert a new symbol into the table
-************************************************************************/
-cSymbol* cSymbolTable::Insert(string symb, bool type) 
-{
-    cSymbol * retVal = NULL;
-
-    map<string,cSymbol*>::iterator iter = symbolDeque.back()->find(symb);
-    if (iter == symbolDeque.back()->end())
-    {
-        retVal = new cSymbol(symb, type);
-        symbolDeque.back()->insert(pair<string,cSymbol*>(symb,retVal));
-    }
-    else 
-    {
-        retVal = iter->second;
-    }
-    return retVal;
-}
-/************************************************************************
-* bool Remove(cSymbol* symbol);
-*		Removes a symbol from the table. Should not be needed unless a 
-* 		d'tor is implemented in the language. 
-************************************************************************/
-bool cSymbolTable::Remove(cSymbol* symb)
-{
-	if(symb != NULL)
-	{
-		symbolDeque.back()->erase(symb->GetSymbol());
-		symb->DecrementSymbolCount();
-		return true;
-	}
-	
-	return false;
-}
-
-/************************************************************************
-* cSymbol LookUpLocal(string name);
-*		Returns the entry that matches the passed-in name for the top level
-************************************************************************/
-cSymbol* cSymbolTable::LookUpLocal(string name)
-{
-	cSymbol * retVal = NULL;
-
-	// Can't find nothing
-	if ( name.empty() )
-	{
-		throw new std::invalid_argument("Can't look up symbol without a name");
-	}
-	
-	// Find it in the top-most map
-	map<string, cSymbol*>::iterator symb = symbolDeque.back()->find(name);
-	if (symb != symbolDeque.back()->end())
-	{
-		retVal = symb->second;
-	}
-	else
-	{
-		retVal = NULL;
-	}
-	// Else return empty cSymbol
-	return retVal;
-}
-
-/************************************************************************
-* cSymbol LookUp(string name);
-*		Returns the entry that matches the passed-in name for all levels
-************************************************************************/
-cSymbol* cSymbolTable::LookUp(string name)
-{
-	cSymbol * retVal = NULL;
-
-	// Can't find nothing
-	if (name.empty())
-	{
-		throw new std::invalid_argument("Can't look up symbol without a name");
-	}	
-	
-	deque<map<string, cSymbol*>*>::iterator symb;
-	for(symb = symbolDeque.begin(); symb != symbolDeque.end(); ++symb)
-	{
-		//Search map for the symbol
-		map<string,cSymbol*>::iterator sym = (*symb)->find(name);
-		
-		//If found return the symbol
-		if(sym != (*symb)->end())	
-			retVal = sym->second;
-	}
-	
-	return retVal;
-}

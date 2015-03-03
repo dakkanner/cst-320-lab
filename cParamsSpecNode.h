@@ -1,6 +1,6 @@
 #pragma once
 //*******************************************************
-// Purpose: A list of actual params passed to a function
+// Purpose: list of formal params to a function
 //
 // Author: Philip Howard
 // Email:  phil.howard@oit.edu
@@ -11,48 +11,47 @@
 
 #include <string>
 #include <list>
-
-#include "cAstNode.h"
-#include "cExprNode.h"
-#include "cAstList.h"
-
 using std::list;
 
-class cParamNode: public cAstNode
+#include "cAstNode.h"
+#include "cAstList.h"
+#include "cVarDeclNode.h"
+
+class cParamsSpecNode: public cAstNode
 {
   public:
     // place the first param in the list
-    cParamNode(cExprNode *param) : cAstNode()
+    cParamsSpecNode(cVarDeclNode *param) : cAstNode()
     {
-        mList = new list<cExprNode *>();
-        if (param != NULL) mList->push_back(param);
+        mList = new list<cVarDeclNode *>();
+        mList->push_back(param);
     }
 
-    // place the next param in the list
-    void AddNode(cExprNode *param) 
+    // Add another param to the list
+    void AddNode(cVarDeclNode *param) 
     {
         mList->push_back(param);
     }
 
+    // return the number of params
+    int NumParams()
+    { return mList->size(); }
+
     // return a specific param
-    cExprNode *GetParam(int index)
+    cVarDeclNode *GetParam(int index)
     {
         return ListGetItem(mList, index);
     }
 
-    int NumParams()
-    { return mList->size(); }
-
     virtual std::string toString()
     {
-        std::string result("(PARAM:");
+        std::string result("(PARAMS:");
         result += ListToString(mList, false);
         result += ")\n";
 
         return result;
     }
-
   protected:
-    list<cExprNode *> *mList;       // list of parameters
+    list<cVarDeclNode *> *mList;    // list of formal params
 };
 

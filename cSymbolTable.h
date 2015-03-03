@@ -1,58 +1,48 @@
-/***********************************************************
-* Author:					Dakota Kanner
-* Filename:					cSymbolTable.h
-************************************************************/
-
-#ifndef C_SYMBOL_TABLE_H
-#define C_SYMBOL_TABLE_H
-
-#include <deque>
-#include <string>
-#include <map>
-
-#include <iostream>
-
-using namespace std;
+#pragma once
+//*******************************************************
+// Purpose: Implementation of nested symbol table
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
 
 #include "cSymbol.h"
-#include "SymanticError.h"
+#include "cScope.h"
 
+// Declare global symbol table
+class cSymbolTable;
+extern cSymbolTable *symbolTableRoot;
 
-/************************************************************************
-* static cSymbolTable* GetInstance();
-* 		Returns the instance of the symbol table
-* 
-* cSymbolTable();
-*		C'tor (default), creates an initial map. Private.
-*
-* bool Insert(string name, cSymbol symb);
-*		Insert a new symbol into the table
-*
-* bool Remove(cSymbol* symbol);
-*		Removes a symbol from the table. Should not be needed unless a 
-* 		d'tor is implemented in the language. 
-*
-* cSymbol LookUpLocal(string name);
-*		Returns the entry that matches the passed-in name for the top level
-*
-* cSymbol LookUp(string name);
-*		Returns the entry that matches the passed-in name for all levels
-************************************************************************/
 class cSymbolTable
 {
-public:
-	static cSymbolTable* GetInstance();
-	map<string,cSymbol*>* IncreaseScope();
-	void DecreaseScope();
-	cSymbol* Insert(string symb, bool type = false);
-	bool Remove(cSymbol* symb);
-	cSymbol* LookUpLocal(string name);
-	cSymbol* LookUp(string name);
+  public:
+    cSymbolTable();
 
-private:
-	cSymbolTable();
-	deque<map<string, cSymbol*>*> symbolDeque; 	// Collection containing deque of symbols hashed by name
-	static cSymbolTable* mSymbols;
+    // Insert a symbol into the table. If symbol already exists, returns
+    // the preexisting symbol. Otherwise, return new symbol
+    cSymbol *Insert(cSymbol *symbol);
+
+    // Look for a symbol. Returns NULL if symbol is not found.
+    cSymbol *Lookup(std::string name);
+
+    // lookup a symbol in the local ST without looking at parent
+    cSymbol *LocalLookup(std::string name);
+
+    // Increase the scoping level. 
+    // A new table is created with a pointer to the old (higher scope) table 
+    // Returns pointer to new table.
+    cScope *IncreaseScope();
+
+    // Lower the scoping level.
+    // Returns a pointer to the current (after decrease) table
+    cScope *DecreaseScope();
+
+    // create a default table with symbols for base types
+    static cSymbolTable *CreateDefaultTable();
+  protected:
+    // pointer to a hash table used to store info
+    cScope *mScope;
 };
-
-#endif

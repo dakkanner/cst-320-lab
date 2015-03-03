@@ -1,11 +1,2 @@
-#pragma once
-
-bool FindPROG();
-bool FindSTMTS();
-bool FindSTMT();
-bool FindEXPR();
-bool FindEXPR_P();
-bool FindPLUSOP();
-bool FindTERM();
-bool FindTERM_P();
-bool FindTIMESOP();
+// definition of semantic error reporting function
+int semantic_error(std::string msg);

@@ -1,40 +1,40 @@
-// parser
+//*******************************************************
+// Purpose: main program for lang compiler
 //
-// Dakota Kanner
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
 //
-// Dakota.Kanner@oit.edu
-
+// Date: 2/20/2015
+//
+//*******************************************************
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
-
-//lex.h contains all the local .h refs
 #include "lex.h"
 
 extern cAstNode *yyast_root;
-cSymbolTable * symbolTableRoot;
 
 int main(int argc, char **argv)
 {
-    symbolTableRoot = cSymbolTable::GetInstance();
-	
-    std::cout << "Dakota Kanner" << std::endl;
+    std::cout << "Philip Howard" << std::endl;
 
     const char *outfile_name;
     int result = 0;
     std::streambuf *cout_buf = std::cout.rdbuf();
 
+    // setup input file from argv[1]
     if (argc > 1)
     {
         yyin = fopen(argv[1], "r");
         if (yyin == NULL)
         {
-            std::cerr << "ERROR: Unable to open file " << argv[1] << "\n";
+            std::cout << "ERROR: Unable to open file " << argv[1] << "\n";
             exit(-1);
         }
     }
 
+    // setup output file from argv[2]
     if (argc > 2)
     {
         outfile_name = argv[2];
@@ -45,28 +45,23 @@ int main(int argc, char **argv)
     std::ofstream output(outfile_name);
     if (!output.is_open())
     {
-        std::cerr << "ERROR: Unable to open file " << outfile_name << "\n";
+        std::cout << "ERROR: Unable to open file " << outfile_name << "\n";
         exit(-1);
     }
+
+    // redirect cout to the output file
     std::cout.rdbuf(output.rdbuf());
 
+    symbolTableRoot = cSymbolTable::CreateDefaultTable();
     result = yyparse();
-    if (yyast_root != NULL)
+    if (result == 0)
     {
-        if (result == 0)
-        {
-            output << yyast_root->toString() << std::endl;
-        } else {
-            output << std::to_string(yynerrs) << " Errors in compile\n";
-            return result;
-        }
+        std::cout << yyast_root->toString() << std::endl;
+    } else {
+        std::cout << yynerrs << " Errors in compile" << std::endl;
     }
 
-    if (yylex() != 0)
-    {
-        std::cout << "Junk at end of program\n";
-    }
-
+    // clean up cout so it points back to standard location
     output.close();
     std::cout.rdbuf(cout_buf);
 

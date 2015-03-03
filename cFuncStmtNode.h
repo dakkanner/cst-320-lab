@@ -1,6 +1,6 @@
 #pragma once
 //*******************************************************
-// Purpose: Class for a scan statement
+// Purpose: Class for a function call as a statement
 //
 // Author: Philip Howard
 // Email:  phil.howard@oit.edu
@@ -12,24 +12,21 @@
 #include <string>
 
 #include "cStmtNode.h"
-#include "cVarRefNode.h"
 
-class cScanNode : public cStmtNode
+class cFuncStmtNode : public cStmtNode
 {
   public:
-    cScanNode(cVarRefNode *lval) : cStmtNode()
+    cFuncStmtNode(cFuncCallNode *call) : cStmtNode()
     {
-        mLval = lval;
+        mCall = call;
     }
 
     virtual std::string toString()
     {
-        std::string result("SCAN: ");
-        result += mLval->toString();
-        return result;
+        return mCall->toString();
     }
 
   protected:
-    cVarRefNode *mLval;     // variable to receive the scanned value
+    cFuncCallNode *mCall;
 };
 

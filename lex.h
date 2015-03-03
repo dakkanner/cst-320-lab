@@ -1,44 +1,47 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				lex.h
-************************************************************/
 #pragma once
-#include "cSymbol.h"
-#include "cSymbolTable.h"
+//*******************************************************
+// Purpose: include all AST nodes, parser globals and scanner globals
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
 #include "cAstNode.h"
-#include "cDeclsNode.h"
-#include "cDeclNode.h"
-#include "cStmtsNode.h"
-#include "cStmtNode.h"
 #include "cBlockNode.h"
+#include "cIntExprNode.h"
+#include "cFloatExprNode.h"
+#include "cBinaryExprNode.h"
 #include "cPrintNode.h"
-#include "cIntExpr.h"
-#include "cFloatExpr.h"
-#include "cBinaryExpr.h"
-#include "cVarRef.h"
-#include "cVarPart.h"
-#include "cVarNode.h"
-#include "cArraySpec.h"
-#include "cArrayVal.h"
 #include "cScanNode.h"
-#include "cIfNode.h"
 #include "cReturnNode.h"
+#include "cDeclsNode.h"
+#include "cStmtsNode.h"
+#include "cVarDeclNode.h"
+#include "cStructDeclNode.h"
+#include "cArrayDeclNode.h"
+#include "cVarRefNode.h"
+#include "cVarPartNode.h"
+#include "cIfNode.h"
 #include "cWhileNode.h"
-#include "cAssignmentNode.h"
-#include "cStructDecl.h"
+#include "cAssignNode.h"
+#include "cFuncDeclNode.h"
+#include "cFuncCallNode.h"
+#include "cFuncStmtNode.h"
+#include "cParamsSpecNode.h"
 #include "cParamNode.h"
-#include "cParamSpec.h"
-#include "cParamsNode.h"
-#include "cParamsSpec.h"
-#include "cFuncDecl.h"
-#include "cFuncCall.h"
-#include "cArrayDecl.h"
+#include "cArraySpecNode.h"
+#include "cArrayValNode.h"
+
 #include "langparse.h"
 
-extern int yyparse();
-extern int yylex();
+#include "parse.h"
+
+int yylex();
+
 extern char *yytext;
 extern int yylineno;
-extern FILE *yyin;
-extern cSymbolTable *symbolTableRoot;
 extern int yynerrs;
+extern FILE *yyin;

@@ -1,35 +1,29 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cAstNode.h
-************************************************************/
-
-#ifndef C_AST_NODE_H
-#define C_AST_NODE_H
-
 #pragma once
-#include <string>
-using namespace std;
+//*******************************************************
+// Purpose: Base class for all AST nodes
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
 
-/************************************************************************
-* cAstNode() 
-*		C'tor (default)
-*
-* virtual string toString() = 0;
-*		Pure virtual function to convert data to a string
-*
-* virtual bool GetSemanticError()
-*		Returns whether there has been a semantic error.
-************************************************************************/
+#include <iostream>
+#include <string>
+
 class cAstNode
 {
-public:
-	cAstNode() 
-	{ }
-	virtual bool GetSemanticError()
-		{ return mSemanticError; }
-	virtual string toString() = 0;
-	
-protected:
-	bool mSemanticError;
+  public:
+    cAstNode() {mSemanticError = false;}
+
+    // return a string representation of the class
+    virtual std::string toString() = 0;
+
+    // return true if a semantic error was detected in this node
+    virtual bool SemanticError() { return mSemanticError; }
+
+  protected:
+    bool mSemanticError;        // true indicates this node has a semantic error
 };
-#endif
+

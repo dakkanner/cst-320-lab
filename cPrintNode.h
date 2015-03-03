@@ -1,30 +1,35 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cPrintNode.h
-************************************************************/
-
-#ifndef C_PRINT_NODE_H
-#define C_PRINT_NODE_H
-
 #pragma once
+//*******************************************************
+// Purpose: Class for a print statement
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
+#include <string>
 
 #include "cStmtNode.h"
 #include "cExprNode.h"
 
-/************************************************************************
-* cPrintNode();
-*		C'tor (default)
-*
-* virtual string toString();
-*		Converts the data to a string.
-************************************************************************/
 class cPrintNode : public cStmtNode
 {
-public:
-	cPrintNode(cExprNode* expr = NULL);
-	virtual string toString();
+  public:
+    cPrintNode(cExprNode *expr) : cStmtNode()
+    {
+        mExpr = expr;
+    }
 
-private:
-	cExprNode* mExpr;
+    virtual std::string toString()
+    {
+        std::string result("PRINT: ");
+        result += mExpr->toString();
+        return result;
+    }
+
+  protected:
+    cExprNode *mExpr;       // expression to be printed
 };
-#endif
+

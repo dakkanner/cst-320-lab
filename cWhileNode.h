@@ -1,30 +1,39 @@
-/***********************************************************
-* Author:				Dakota Kanner
-* Filename:				cWhileNode.h
-************************************************************/
-
-#ifndef C_WHILE_NODE_H
-#define C_WHILE_NODE_H
-
 #pragma once
+//*******************************************************
+// Purpose: Class for a while statement
+//
+// Author: Philip Howard
+// Email:  phil.howard@oit.edu
+//
+// Date: 2/20/2015
+//
+//*******************************************************
+
+#include <string>
+
 #include "cStmtNode.h"
 #include "cExprNode.h"
 
-/************************************************************************
-* cWhileNode(cExprNode* expr, cStmtNode* stmt);
-*		C'tor (with params)
-*
-* virtual string toString();
-*		Converts the data to a string.
-************************************************************************/
 class cWhileNode : public cStmtNode
 {
-public:
-	cWhileNode(cExprNode* expr = NULL, cStmtNode* stmt = NULL);
-	virtual string toString();
+  public:
+    cWhileNode(cExprNode *expr, cStmtNode *stmt) : cStmtNode()
+    {
+        mExpr = expr;
+        mStmt = stmt;
+    }
 
-private:
-	cExprNode* mExpr;
-	cStmtNode* mStmt;
+    virtual std::string toString()
+    {
+        std::string result("(WHILE: ");
+        result += mExpr->toString();
+        result += "\n" + mStmt->toString();
+        result += "\n)";
+        return result;
+    }
+
+  protected:
+    cExprNode *mExpr;       // conditional expression
+    cStmtNode *mStmt;       // statement to execute while true
 };
-#endif
+
