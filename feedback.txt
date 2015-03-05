@@ -1,0 +1,81 @@
+“Lab1 Feedback”
+Did not handle negative numbers (not explicitly mentioned in Word doc)
+You don't need your junk definition. the char definition handles all junk (but you should probably use the name 'junk', not 'char')
+
+Lab2 Feedback
+
+Your git repository had intermediate files (e.g. object files) in it. It should only have source files.
+
+You need to document your code with header blocks, etc.
+
+You did not fix your scanner as required (see Scanner Updates in Blackboard).
+
+parse.cpp had compilation warnings that should be fixed.
+
+You do not need to examine yytext[0] to figure out what the token is. The return value of yylex() gives you that info.
+
+Your code segfaulted on the following. Probably due to infinite recursion.
+
+(5)+(;
+(4) + ();
+
+Your code enters an infinite loop if the file does not have a ';' on the last statement and if there is not 'end'.
+
+//********************************
+Lab 3 Feedback
+
+LATE: 
+
+Your git repository has intermediate files and other stuff that should not be there.
+
+Your build has warnings.
+
+in cSymbol, you set both the name and value to the same thing. I;m not sure what the value is supposed to be.
+
+Your cSymbol class has a bunch of code commented out. Where did this code come from?
+
+Did not implement the local and global lookups. These will be needed for Lab 4.
+
+You changed scope in the scanner, not the parser, so you did not complet Part B.
+
+// *************************************
+Lab 4 Feedback
+
+-10 Your git repository has intermediate files. It should only contain source.
+
+Minor problems with spacing in your output. Check the Word file to see where literal spaces belong.
+
+-10 When you declare a function in an inner scope with the same name as a function in an outer scope, the inner scope function should hide the outer name (just like with variables).
+
+-5 The symbols used for the parameters in a function definition should be the same (same sequence number) as the symbols used in a prior declaration.
+
+I'm not sure why cExprNode has a protected member variable that is a cExprNode.How is it used?
+
+Your toString() functions should all be declared virtual, and not all of them were. Technically, the bottom layer of your class hierarchy doesn't need "virtual", but you never know when you are going to sub-class something.
+
++10% for working individually
+
+//*****************************************
+Lab 5 feedback
+
+-5 your repository has non-source files in it.
+
+-5 I believe the problem with your symbol numbering is that your symbolTable Insert routine takes a string instead of a symbol. Since you've already created the symbol, you should pass the symbol to Insert instead of having Insert create a new one. With the numbering problem, it is very difficult for me to determine of your non-error tests are running correctly.
+
+Looks like you copied and pasted some of your comments and did not edit the copied version.
+
+I'm not sure why you need the try block in:
+        //See if the parent can be a struct decl
+        try
+        {
+                structDcl = static_cast<cStructDecl*>(varPt->GetTypeRef());
+        }
+        catch (...)
+        { }
+The static_cast should not fail because it doesn't do type checking. Are you catching seg faults caused by bad dereferencing? If so, a try block is the wrong way to do this.
+
+In IsSymbolInParent, I don't understand:
+	symbolTableRoot->Remove(part->GetId());
+Under what circumstances do you wind up with a symbol in the symbol table that shouldn't be there? You should do error checking prior to inserting a symbol so only good ones wind up in there.
+
+-5 code quality issues as mentioned above.
