@@ -3,10 +3,11 @@
 // Purpose: Class for a variable part. 
 //          In struct refs, there is one varpart for each field referenced
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -61,6 +62,16 @@ class cVarPartNode : public cAstNode
 
         return result;
     }
+	
+	int GetDeclOffsets()
+	{
+		return mDecl->GetOffset();
+	}
+
+	int GetFieldDeclOffsets()
+	{
+		return mFieldDecl->GetOffset();
+	}
 
   protected:
     cSymbol *mId;               // identifier for this item

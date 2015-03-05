@@ -1,10 +1,11 @@
 //*******************************************************
 // Purpose: main program for lang compiler
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 #include <stdio.h>
@@ -17,7 +18,7 @@ extern cAstNode *yyast_root;
 
 int main(int argc, char **argv)
 {
-    std::cout << "Philip Howard" << std::endl;
+    std::cout << "Dakota Kanner" << std::endl;
 
     const char *outfile_name;
     int result = 0;
@@ -56,6 +57,7 @@ int main(int argc, char **argv)
     result = yyparse();
     if (result == 0)
     {
+		yyast_root->ComputeOffsets(0);
         std::cout << yyast_root->toString() << std::endl;
     } else {
         std::cout << yynerrs << " Errors in compile" << std::endl;

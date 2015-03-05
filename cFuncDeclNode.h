@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class for a function definiiton or delcaration
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -90,10 +91,29 @@ class cFuncDeclNode : public cDeclNode
             result += "()";
         if (mDecls != NULL) result += "\n" + mDecls->toString();
         if (mStmts != NULL) result += "\n" + mStmts->toString();
-        if (mDeclsSize != 0) result += "\nsize: " + std::to_string(mDeclsSize);
+        if (mSize > -1) result += "\nsize: " + std::to_string(mSize);
         result += "\n)";
         return result;
     }
+	
+	int ComputeOffsets(int base)
+	{
+		int off(0);
+
+		if (mParams != NULL)
+			off = mParams->ComputeOffsets(off);
+
+		if (mDecls != NULL)
+			off = mDecls->ComputeOffsets(off);
+
+		if (mStmts != NULL)
+			off = mStmts->ComputeOffsets(off);
+
+		mSize = mDecls->Size();
+
+		return base;
+	}
+
 
   protected:
     cSymbol *mReturnType;       // return type of function

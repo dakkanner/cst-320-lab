@@ -1,5 +1,14 @@
 #pragma once
-
+//*******************************************************
+// Purpose: Class for a variable reference. 
+//
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
+//
+// Date: 3/4/2015
+//
+//*******************************************************
 #include <string>
 #include <list>
 using std::list;
@@ -20,6 +29,8 @@ class cVarRefNode : public cExprNode
   public:
     cVarRefNode(cVarPartNode *var) 
     {
+		mSize = -1;
+		mOffset = -1;
         cDeclNode *baseDecl;
 
         if (symbolTableRoot->Lookup(var->Name()) == NULL)
@@ -86,13 +97,39 @@ class cVarRefNode : public cExprNode
         {
             result += ")";
         }
+		
+		if(mSize > -1)
+			result += "size: " + std::to_string(mSize);
+		if(mOffset > -1)
+			result += " offset: " + std::to_string(mOffset);
+		
         result += ")";
 
         return result;
+    }
+	
+    virtual int ComputeOffsets(int base)
+    {
+		list<cVarPartNode *>::iterator iter = mList->begin();
+        mOffset = (*iter)->GetDecl()->GetOffset();
+      
+        for(iter++; iter != mList->end(); iter++)
+        {
+            mOffset += (*iter)->GetFieldDeclOffsets();
+        }
+		
+		if(mDepthDecl->IsArray())
+			mSize = mDepthDecl->GetBaseType()->Size();		
+		else
+			mSize = mDepthDecl->Size();
+		
+        return base;
     }
 
   protected:
     std::string mName;
     list<cVarPartNode *> *mList;
     cDeclNode *mDepthDecl;
+	int mSize;
+	int mOffset;
 };

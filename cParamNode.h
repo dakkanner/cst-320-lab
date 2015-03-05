@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: A list of actual params passed to a function
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -51,6 +52,14 @@ class cParamNode: public cAstNode
 
         return result;
     }
+	  
+	int ComputeOffsets(int base)
+	{
+		for(cExprNode* i : (*mList))
+			i->ComputeOffsets(base);
+
+		return base;
+	}
 
   protected:
     list<cExprNode *> *mList;       // list of parameters

@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Base class for all declarations
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -27,6 +28,7 @@ class cDeclsNode : public cAstNode
     {
         mList = new list<cDeclNode *>();
         mList->push_back(decl);
+		mSize = -1;
     }
 
     // add a declaration to the list
@@ -43,8 +45,27 @@ class cDeclsNode : public cAstNode
 
         return result;
     }
+	
+	int Size()
+	{
+		return mSize;
+	}
+	
+	virtual int ComputeOffsets(int base)
+	{
+		int off = base;
+
+		for(cDeclNode* i : (*mList))
+			off = i->ComputeOffsets(off);
+
+		mSize = off - base;
+
+		return off;
+	}
+
 
   protected:
-    list<cDeclNode *> *mList;       // list of delcarations
+    list<cDeclNode*> *mList;       // list of delcarations
+	int mSize;
 };
 

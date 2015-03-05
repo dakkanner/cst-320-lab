@@ -1,5 +1,14 @@
 #pragma once
-
+//*******************************************************
+// Purpose: Class for declarations.
+//
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
+//
+// Date: 3/4/2015
+//
+//*******************************************************
 #include <string>
 
 #include "cAstNode.h"
@@ -38,9 +47,16 @@ class cDeclNode : public cAstNode
 
         return false;
     }
+	
+    virtual int GetOffset()
+    {
+        return mOffset;
+    }
+	
   protected:
     static const int WORD_SIZE = 4;
     cSymbol *mId;
     int mSize;
+	int mOffset;
 };
 

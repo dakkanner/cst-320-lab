@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class for an assignment statement
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -38,6 +39,17 @@ class cAssignNode : public cStmtNode
         result += mExpr->toString();
         result += ")";
         return result;
+    }
+	
+    virtual int ComputeOffsets(int base)
+    {
+		if(mLval != NULL)
+			mLval->ComputeOffsets(base);
+		
+		if(mExpr != NULL)
+			mExpr->ComputeOffsets(base);
+		
+        return base;
     }
 
   protected:

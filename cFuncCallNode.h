@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class to represent a function call
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -48,6 +49,12 @@ class cFuncCallNode : public cExprNode
         result += ")";
         return result;
     }
+	
+	virtual int ComputeOffsets(int base)
+	{
+		mParams->ComputeOffsets(base);
+		return base;
+	}
 
   protected:
     cSymbol *mId;           // name of the function

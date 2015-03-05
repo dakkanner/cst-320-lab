@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class for a list of statements
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -40,8 +41,21 @@ class cStmtsNode : public cAstNode
 
         return result;
     }
+	
+	virtual int ComputeOffsets(int base)
+	{
+		int offset = base;
+
+		for(cStmtNode* i : (*mList))
+			offset = i->ComputeOffsets(offset);
+
+		mSize = offset - base;
+
+		return offset;
+	}
 
   protected:
     list<cStmtNode *> *mList;   // list of statements
+	int mSize;
 };
 

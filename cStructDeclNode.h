@@ -2,15 +2,15 @@
 //*******************************************************
 // Purpose: Class for a structure type delcaration
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
 #include <string>
-
 #include "cAstNode.h"
 #include "cDeclsNode.h"
 #include "cDeclNode.h"
@@ -45,12 +45,24 @@ class cStructDeclNode : public cDeclNode
         std::string result("STRUCT: ");
         result += mDecls->toString();
         result += " " + mId->toString();
-
+		
+		result += " size: " + std::to_string(mSize);
+		
         return result;
     }
+	
+	int ComputeOffsets(int base)
+	{
+		mOffset = base;
+		mDecls->ComputeOffsets(0);
+		mSize = mDecls->Size();
+
+		return mOffset;
+	}
 
   protected:
     cScope *mSymTab;        // symbol table for this struct
     cDeclsNode *mDecls;     // list of fields
+	int mOffset;
 };
 

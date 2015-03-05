@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class for a variable declaration
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -23,6 +24,7 @@ class cVarDeclNode : public cDeclNode
   public:
     cVarDeclNode(cSymbol *type, cSymbol *id) : cDeclNode()
     {
+		mOffset = -1;
         cSymbol *localId = symbolTableRoot->LocalLookup(id->Name());
         if (localId != NULL)
         {
@@ -55,8 +57,32 @@ class cVarDeclNode : public cDeclNode
         std::string result("VAR: ");
         result += mType->TypeId();
         result += " " + mId->toString();
-
+		
+		if(mSize > -1)
+			result += " size: " + std::to_string(mSize);
+		if(mOffset > -1)
+			result += " offset: " + std::to_string(mOffset);
+		
         return result;
+    }
+	
+    virtual int ComputeOffsets(int base)
+    {
+		if(mType->Size() >= WORD_SIZE)
+		{
+			// Word Align
+			if(base % WORD_SIZE != 0)
+			{
+				base = (base + WORD_SIZE)/WORD_SIZE; //Yeah?
+				base *= WORD_SIZE;
+			}
+		}
+		
+		mOffset = base;
+		mSize = mType->Size();
+		
+		//result += mSize;
+        return mOffset + mSize;
     }
 
   protected:

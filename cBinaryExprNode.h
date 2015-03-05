@@ -2,10 +2,11 @@
 //*******************************************************
 // Purpose: Class for binary expressions
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/4/2015
 //
 //*******************************************************
 
@@ -47,6 +48,13 @@ class cBinaryExprNode : public cExprNode
 
         return result;
     }
+	
+	virtual int ComputeOffsets(int base)
+	{
+		mLeftExpr->ComputeOffsets(base);
+		mRightExpr->ComputeOffsets(base);
+		return base;
+	}
 
   protected:
     cExprNode *mLeftExpr;       // left expression
