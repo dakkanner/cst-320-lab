@@ -23,6 +23,9 @@ class cExprNode : public cAstNode
     // return the type of the expression
     virtual cDeclNode *GetType() =  0;
 	
+	virtual int ComputeOffsets(int base)
+	{ return base; }
+	
 	virtual void GenerateCode()
 	{ }
 };

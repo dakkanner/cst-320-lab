@@ -40,6 +40,9 @@ class cFloatExprNode : public cExprNode
         return result;
     }
 	
+	virtual int ComputeOffsets(int base)
+	{ return base; }
+	
 	virtual void GenerateCode()
 	{
 		//Float to string

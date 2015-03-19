@@ -6,7 +6,7 @@
 // Email:  Dakota.Kanner@oit.edu
 // Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 3/4/2015
+// Date: 3/18/2015
 //
 //*******************************************************
 
@@ -58,6 +58,7 @@ class cFuncCallNode : public cExprNode
 	
 	virtual void GenerateCode()
 	{
+		EmitString("/*cFuncCall " + mId->Name() + "*/ \n");
 		EmitString(mId->Name());
 		EmitString("();\n");
 	}

@@ -6,11 +6,12 @@
 // Email:  Dakota.Kanner@oit.edu
 // Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 3/4/2015
+// Date: 3/18/2015
 //
 //*******************************************************
 
 #include <string>
+using std::string;
 
 #include "cStmtNode.h"
 #include "cExprNode.h"
@@ -24,9 +25,9 @@ class cWhileNode : public cStmtNode
         mStmt = stmt;
     }
 
-    virtual std::string toString()
+    virtual string toString()
     {
-        std::string result("(WHILE: ");
+        string result("(WHILE: ");
         result += mExpr->toString();
         result += "\n" + mStmt->toString();
         result += "\n)";
@@ -45,15 +46,30 @@ class cWhileNode : public cStmtNode
 	
 	virtual void GenerateCode()
 	{
-		EmitString("while(");
+		EmitString("/*While loop starting*/ \n");
+		
+		string whileStart = GenerateLabel();
+		string whileEnd = GenerateLabel();
+		
+		//Label for the start of the while loop
+		EmitString(whileStart + ":\n");
+		
+		EmitString("if(!(");
 		if(mExpr != NULL)
 			mExpr->GenerateCode();
-		EmitString(")\n{\n");
+		EmitString("))\n");
+		EmitString("\tgoto " + whileEnd + ";\n");
 		
 		if(mStmt != NULL)
 			mStmt->GenerateCode();
+		EmitString("\n");
 		
-		EmitString("\n}");
+		//Go back to check if loop should run again
+		EmitString("goto " + whileStart + ";\n");
+		
+		//Label for the end of the while loop
+		EmitString(whileEnd + ": ; \n");
+		EmitString("/*While loop ending*/ \n");
 	}
 
   protected:

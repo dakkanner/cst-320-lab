@@ -9,40 +9,21 @@ int main() {
 Frame_Pointer=0;
 Stack_Pointer=0;
 /*cDeclsNode*/
-int factorial() 
- {
-/*cDeclsNode*/
-/*cVarRefNode result*/
-(*(int*)(&Memory[(Frame_Pointer + 4)])) = 1;
-if(/*cVarRefNode value*/
-(*(int*)(&Memory[(Frame_Pointer + 0)]))) 
-{
-/*cDeclsNode*/
-Stack_Pointer += 4;
-/*cVarRefNode temp*/
-(*(int*)(&Memory[(Frame_Pointer + 8)])) = factorial();
-;
-/*cVarRefNode result*/
-(*(int*)(&Memory[(Frame_Pointer + 4)])) = (/*cVarRefNode value*/
-(*(int*)(&Memory[(Frame_Pointer + 0)]))*/*cVarRefNode temp*/
-(*(int*)(&Memory[(Frame_Pointer + 8)]))) ;
-Stack_Pointer -= 4;
-}
-
-}
 Stack_Pointer += 12;
 /*cVarRefNode aa*/
 (*(int*)(&Memory[(Frame_Pointer + 0)])) = 3;
 /*cVarRefNode bb*/
 (*(int*)(&Memory[(Frame_Pointer + 4)])) = 4;
 /*cVarRefNode temp*/
-(*(int*)(&Memory[(Frame_Pointer + 8)])) = factorial();
+(*(int*)(&Memory[(Frame_Pointer + 8)])) = /*cFuncCall factorial*/ 
+factorial();
 ;
 Temp = /*cVarRefNode temp*/
 (*(int*)(&Memory[(Frame_Pointer + 8)]));
 printf("%d\n", Temp);
 /*cVarRefNode temp*/
-(*(int*)(&Memory[(Frame_Pointer + 8)])) = factorial();
+(*(int*)(&Memory[(Frame_Pointer + 8)])) = /*cFuncCall factorial*/ 
+factorial();
 ;
 Temp = /*cVarRefNode temp*/
 (*(int*)(&Memory[(Frame_Pointer + 8)]));
@@ -55,4 +36,32 @@ Temp = /*cVarRefNode bb*/
 printf("%d\n", Temp);
 Stack_Pointer -= 12;
   return 0;
+}
+int factorial() 
+ {
+/*cDeclsNode*/
+/*cVarRefNode result*/
+(*(int*)(&Memory[(Frame_Pointer + 4)])) = 1;
+/*If/else block starting*/ 
+if(/*cVarRefNode value*/
+(*(int*)(&Memory[(Frame_Pointer + 0)]))) 
+	goto LABEL_2;
+goto LABEL_4;
+/*Begin if(true) stmt*/ 
+LABEL_2:
+/*cDeclsNode*/
+Stack_Pointer += 4;
+/*cVarRefNode temp*/
+(*(int*)(&Memory[(Frame_Pointer + 8)])) = /*cFuncCall factorial*/ 
+factorial();
+;
+/*cVarRefNode result*/
+(*(int*)(&Memory[(Frame_Pointer + 4)])) = (/*cVarRefNode value*/
+(*(int*)(&Memory[(Frame_Pointer + 0)]))*/*cVarRefNode temp*/
+(*(int*)(&Memory[(Frame_Pointer + 8)]))) ;
+Stack_Pointer -= 4;
+goto LABEL_4;
+LABEL_4: ;
+/*Done with if/else block*/ 
+
 }

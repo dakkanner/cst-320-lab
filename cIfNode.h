@@ -6,11 +6,12 @@
 // Email:  Dakota.Kanner@oit.edu
 // Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 3/4/2015
+// Date: 3/18/2015
 //
 //*******************************************************
 
 #include <string>
+using std::string;
 
 #include "cStmtNode.h"
 #include "cExprNode.h"
@@ -52,23 +53,42 @@ class cIfNode : public cStmtNode
 	
 	virtual void GenerateCode()
 	{
+		EmitString("/*If/else block starting*/ \n");
+		
+		string ifStart = GenerateLabel();
+		string elseStart = GenerateLabel();
+		string elseEnd = GenerateLabel();
+		
 		EmitString("if(");
 		mExpr->GenerateCode();
-		EmitString(") \n{\n");
-		
-		if(mStmt != NULL)
-		{
-			mStmt->GenerateCode();
-		}
-		
-		EmitString("}\n");
+		EmitString(") \n");
+		EmitString("\tgoto " + ifStart + ";\n");
 		
 		if(mElse != NULL)
+			EmitString("goto " + elseStart + ";\n");
+		else
+			EmitString("goto " + elseEnd + ";\n");
+		
+		//If block
+		if(mStmt != NULL)
 		{
-			EmitString("else\n{\n");
-			mElse->GenerateCode();
-			EmitString("}\n");
+			EmitString("/*Begin if(true) stmt*/ \n");
+			EmitString(ifStart + ":\n");
+			mStmt->GenerateCode();
+			EmitString("goto " + elseEnd + ";\n");
 		}
+		
+		//else
+		if(mElse != NULL)
+		{
+			EmitString("/*Begin else stmt*/ \n");
+			EmitString(elseStart + ":\n");
+			mElse->GenerateCode();
+			//EmitString("goto " + elseEnd + ";\n");
+		}
+		
+		EmitString(elseEnd + ": ;\n"); 		//Apparently we need that semicolon there.
+		EmitString("/*Done with if/else block*/ \n");
 	}
 
   protected:

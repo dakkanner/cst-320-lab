@@ -45,6 +45,9 @@ class cIntExprNode : public cExprNode
         return result;
     }
 	
+	virtual int ComputeOffsets(int base)
+	{ return base; }
+	
 	virtual void GenerateCode()
 	{
 		EmitString(std::to_string(mIntVal));

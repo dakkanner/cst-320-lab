@@ -1,10 +1,11 @@
 //*******************************************************
 // Purpose: main program for lang compiler
 //
-// Author: Philip Howard
-// Email:  phil.howard@oit.edu
+// Author: Dakota Kanner
+// Email:  Dakota.Kanner@oit.edu
+// Original author: Phil Howard, phil.howard@oit.edu
 //
-// Date: 2/20/2015
+// Date: 3/18/2015
 //
 //*******************************************************
 #include <stdio.h>
@@ -62,6 +63,7 @@ int main(int argc, char **argv)
         output << yyast_root->toString() << std::endl;
         InitOutput("langout.c");
         yyast_root->GenerateCode();
+		//RewriteFunctions();
         FinalizeOutput();
     } else {
         std::cerr << yynerrs << " Errors in compile" << std::endl;
