@@ -63,6 +63,9 @@ class cParamsSpecNode: public cAstNode
 		return offset;
 	}
 	
+	virtual void GenerateCode()
+	{ }
+	
   protected:
     list<cVarDeclNode *> *mList;    // list of formal params
 };

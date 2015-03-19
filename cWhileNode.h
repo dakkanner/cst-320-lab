@@ -32,6 +32,29 @@ class cWhileNode : public cStmtNode
         result += "\n)";
         return result;
     }
+	
+    virtual int ComputeOffsets(int base)
+    {		
+		if(mExpr != NULL)
+			mExpr->ComputeOffsets(base);
+		if(mStmt != NULL)
+			mStmt->ComputeOffsets(base);
+		
+        return base;
+    }
+	
+	virtual void GenerateCode()
+	{
+		EmitString("while(");
+		if(mExpr != NULL)
+			mExpr->GenerateCode();
+		EmitString(")\n{\n");
+		
+		if(mStmt != NULL)
+			mStmt->GenerateCode();
+		
+		EmitString("\n}");
+	}
 
   protected:
     cExprNode *mExpr;       // conditional expression

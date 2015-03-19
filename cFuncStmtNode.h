@@ -26,6 +26,14 @@ class cFuncStmtNode : public cStmtNode
     {
         return mCall->toString();
     }
+	
+	virtual void GenerateCode()
+	{
+		if(mCall != NULL)
+		{
+			mCall->GenerateCode();
+		}
+	}
 
   protected:
     cFuncCallNode *mCall;

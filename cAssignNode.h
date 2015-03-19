@@ -51,9 +51,23 @@ class cAssignNode : public cStmtNode
 		
         return base;
     }
+	
+	virtual void GenerateCode()
+	{
+		if(mLval != NULL)
+		{
+			mLval->GenerateCode();
+			EmitString(" = ");
+		}
+		if(mExpr != NULL)
+		{
+			mExpr->GenerateCode();
+			EmitString(";\n");
+		}
+	}
 
   protected:
-    cExprNode *mExpr;       // the rhs of the assignment
+    cExprNode   *mExpr;     // the rhs of the assignment
     cVarRefNode *mLval;     // the lhs of the assignment`
 };
 

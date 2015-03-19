@@ -55,6 +55,15 @@ class cBinaryExprNode : public cExprNode
 		mRightExpr->ComputeOffsets(base);
 		return base;
 	}
+	
+	virtual void GenerateCode()
+	{
+		EmitString("(");
+		mLeftExpr->GenerateCode();
+		EmitString(&mOperator);
+		mRightExpr->GenerateCode();
+		EmitString(") ");
+	}
 
   protected:
     cExprNode *mLeftExpr;       // left expression

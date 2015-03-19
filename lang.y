@@ -180,6 +180,11 @@ stmt:       IF '(' expr ')' stmt ELSE stmt
         |   func_call ';'       { $$ = new cFuncStmtNode($1); }
         |   block               { $$ = $1; }
         |   RETURN expr ';'     { $$ = new cReturnNode($2); }
+		|   lval '=' func_call ';'
+		                        {
+								    $$ = new cAssignNode((cVarRefNode*)$1, $3);
+									if ($$->SemanticError()) YYERROR;
+								}
         |   error ';'           { $$ = NULL; }
 
 func_call:  IDENTIFIER '(' params ')' 
@@ -229,7 +234,6 @@ fact:        '(' expr ')'       { $$ = $2; }
         |   INT_VAL             { $$ = new cIntExprNode($1); }
         |   FLOAT_VAL           { $$ = new cFloatExprNode($1); }
         |   varref              { $$ = $1; }
-        |   func_call           { $$ = $1; }
 
 %%
 

@@ -52,6 +52,9 @@ class cDeclNode : public cAstNode
     {
         return mOffset;
     }
+
+    virtual void GenerateCode()
+    { }
 	
   protected:
     static const int WORD_SIZE = 4;

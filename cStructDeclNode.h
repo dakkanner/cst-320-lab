@@ -51,7 +51,7 @@ class cStructDeclNode : public cDeclNode
         return result;
     }
 	
-	int ComputeOffsets(int base)
+	virtual int ComputeOffsets(int base)
 	{
 		mOffset = base;
 		mDecls->ComputeOffsets(0);

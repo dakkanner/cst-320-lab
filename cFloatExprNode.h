@@ -39,6 +39,12 @@ class cFloatExprNode : public cExprNode
 
         return result;
     }
+	
+	virtual void GenerateCode()
+	{
+		//Float to string
+		EmitFloat(mFloatVal);
+	}
 
   protected:
     double mFloatVal;       // value of float constant

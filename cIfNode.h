@@ -35,6 +35,41 @@ class cIfNode : public cStmtNode
         result += "\n)";
         return result;
     }
+	
+	virtual int ComputeOffsets(int base)
+	{
+		if(mExpr != NULL)
+		{
+			mExpr->ComputeOffsets(base);
+		}
+		if(mStmt != NULL)
+		{
+			mStmt->ComputeOffsets(base);
+		}
+
+		return base;
+	}
+	
+	virtual void GenerateCode()
+	{
+		EmitString("if(");
+		mExpr->GenerateCode();
+		EmitString(") \n{\n");
+		
+		if(mStmt != NULL)
+		{
+			mStmt->GenerateCode();
+		}
+		
+		EmitString("}\n");
+		
+		if(mElse != NULL)
+		{
+			EmitString("else\n{\n");
+			mElse->GenerateCode();
+			EmitString("}\n");
+		}
+	}
 
   protected:
     cExprNode *mExpr;       // conditional expression

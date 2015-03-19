@@ -49,14 +49,30 @@ class cBlockNode : public cStmtNode
 		
 		if(mDecls != NULL)
 			off = mDecls->ComputeOffsets(off);
-		if (mStmts != nullptr)
+		if (mStmts != NULL)
 			off = mStmts->ComputeOffsets(off);
         
         mSize = off - base;
 		
 		return base;
 	}
-
+	
+	virtual void GenerateCode()
+	{
+		if(mDecls != NULL)
+		{
+			mDecls->GenerateCode();
+			EmitString("Stack_Pointer += " + std::to_string(mSize) + ";\n");
+		}
+		if (mStmts != NULL)
+		{
+			mStmts->GenerateCode();
+		}
+		if(mDecls != NULL)
+		{
+			EmitString("Stack_Pointer -= " + std::to_string(mSize) + ";\n");
+		}
+	}
   protected:
     cDeclsNode *mDecls;     // declarations
     cStmtsNode *mStmts;     // statements

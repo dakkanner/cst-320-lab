@@ -29,6 +29,11 @@ class cScanNode : public cStmtNode
         result += mLval->toString();
         return result;
     }
+	
+	virtual void GenerateCode()
+	{
+		mLval->GenerateCode();
+	}
 
   protected:
     cVarRefNode *mLval;     // variable to receive the scanned value

@@ -60,8 +60,23 @@ class cParamNode: public cAstNode
 
 		return base;
 	}
+	
+	virtual void GenerateCode()
+	{
+		for(cExprNode* expr : (*mList))
+		{
+			if(expr->GetType()->IsInt())
+				EmitString("*(int*)(&Memory[Stack_Pointer]) = ");
+			else   	// Float
+				EmitString("*(double*)(&Memory[Stack_Pointer]) = ");
+		
+			expr->GenerateCode();
+			EmitString(";\n");
+			EmitString("Stack_Pointer += 4;\n");
+		}
+	}
 
   protected:
-    list<cExprNode *> *mList;       // list of parameters
+    list<cExprNode*> *mList;       // list of parameters
 };
 

@@ -55,6 +55,12 @@ class cFuncCallNode : public cExprNode
 		mParams->ComputeOffsets(base);
 		return base;
 	}
+	
+	virtual void GenerateCode()
+	{
+		EmitString(mId->Name());
+		EmitString("();\n");
+	}
 
   protected:
     cSymbol *mId;           // name of the function

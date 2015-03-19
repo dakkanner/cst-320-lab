@@ -113,6 +113,26 @@ class cFuncDeclNode : public cDeclNode
 
 		return base;
 	}
+	
+	virtual void GenerateCode()
+	{
+		EmitString("int " + mId->Name() + "(");
+		if(mParams != NULL)
+		{
+			mParams->GenerateCode();
+		}
+		EmitString(") \n {\n");
+		
+		if(mDecls != NULL)
+		{
+			mDecls->GenerateCode();
+		}
+		if(mStmts != NULL)
+		{
+			mStmts->GenerateCode();
+		}
+		EmitString("\n}\n");
+	}
 
 
   protected:

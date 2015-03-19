@@ -62,6 +62,16 @@ class cDeclsNode : public cAstNode
 
 		return off;
 	}
+	
+	virtual void GenerateCode()
+	{
+		EmitString("/*cDeclsNode*/\n");
+		if(mList != NULL)
+		{
+			for(cDeclNode* i : (*mList))
+				i->GenerateCode();
+		}
+	}
 
 
   protected:

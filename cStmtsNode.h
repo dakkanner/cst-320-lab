@@ -53,6 +53,14 @@ class cStmtsNode : public cAstNode
 
 		return offset;
 	}
+	
+	virtual void GenerateCode()
+	{
+		for(cStmtNode* i : (*mList))
+		{
+			i->GenerateCode();
+		}
+	}
 
   protected:
     list<cStmtNode *> *mList;   // list of statements

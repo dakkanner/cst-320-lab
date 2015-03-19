@@ -79,3 +79,12 @@ In IsSymbolInParent, I don't understand:
 Under what circumstances do you wind up with a symbol in the symbol table that shouldn't be there? You should do error checking prior to inserting a symbol so only good ones wind up in there.
 
 -5 code quality issues as mentioned above.
+
+//************************************
+Lab 6
+
+Please give me a tag, not a commit ID, for pulling from your repository.
+
+-20 You did not ComputeOffsets on the conditional expression nor the statements in if's and while's.
+
+
